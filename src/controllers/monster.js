@@ -243,6 +243,8 @@ class Monster extends Controller {
 			data.disappearTime = disappearTime.format(this.config.locale.time)
                         //			data.nightTime = disappearTime.hour() < 8 || disappearTime.hour() >= 20
                         data.nightTime = disappearTime.hour() < sunrise() || disappearTime.hour() >= sunset()
+			data.sunrise = sunrise.format(this.config.locale.time)
+			data.sunset = sunset.format(this.config.locale.time)
 			data.confirmedTime = data.disappear_time_verified
 			data.distime = data.disappearTime // deprecated
 			data.individual_attack = data.atk // deprecated
