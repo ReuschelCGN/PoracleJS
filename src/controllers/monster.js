@@ -2,6 +2,7 @@ const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
 const Controller = require('./controller')
 require('moment-precise-range-plugin')
+const { getSunrise, getSunset } = require('sunrise-sunset-js')
 
 class Monster extends Controller {
 	getAlteringWeathers(types, boostStatus) {
@@ -193,6 +194,9 @@ class Monster extends Controller {
         || !(['string', 'number'].includes(typeof data.individual_defense) && (+data.individual_defense + 1))
         || !(['string', 'number'].includes(typeof data.individual_stamina) && (+data.individual_stamina + 1)))
 
+                        const data.sunrise = getSunrise(data.latitude, data.longitude);
+                        const data.sunset = getSunset(data.latitude, data.longitude);
+
 			if (data.pokestop_name) data.pokestop_name = this.escapeJsonString(data.pokestop_name)
 			data.pokestopName = data.pokestop_name
 			data.pokemonId = data.pokemon_id
@@ -237,7 +241,8 @@ class Monster extends Controller {
 			data.tth = moment.preciseDiff(Date.now(), data.disappear_time * 1000, true)
 			const disappearTime = moment(data.disappear_time * 1000).tz(geoTz.find(data.latitude, data.longitude).toString())
 			data.disappearTime = disappearTime.format(this.config.locale.time)
-			data.nightTime = disappearTime.hour() < 8 || disappearTime.hour() >= 20
+                        //			data.nightTime = disappearTime.hour() < 8 || disappearTime.hour() >= 20
+                        data.nightTime = disappearTime.hour() < data.sunrise || disappearTime.hour() >= data.sunset
 			data.confirmedTime = data.disappear_time_verified
 			data.distime = data.disappearTime // deprecated
 			data.individual_attack = data.atk // deprecated
