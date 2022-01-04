@@ -168,7 +168,7 @@ class Gym extends Controller {
 
 					data.nightTime = !conqueredTime.isBetween(sunriseTime, sunsetTime)
 
-					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl', 'nightTime'])
+					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
