@@ -2,7 +2,7 @@ const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
 const Controller = require('./controller')
 require('moment-precise-range-plugin')
-const { getSunrise, getSunset } = require('sunrise-sunset-js')
+const suncalc = require('suncalc');
 
 class Monster extends Controller {
 	getAlteringWeathers(types, boostStatus) {
@@ -237,11 +237,11 @@ class Monster extends Controller {
 			data.tthSeconds = data.disappear_time - Date.now() / 1000
 			data.tth = moment.preciseDiff(Date.now(), data.disappear_time * 1000, true)
 			const disappearTime = moment(data.disappear_time * 1000).tz(geoTz.find(data.latitude, data.longitude).toString())
-                        const sunrise = getSunrise(data.latitude, data.longitude);
-                        const sunset = getSunset(data.latitude, data.longitude);
 			data.disappearTime = disappearTime.format(this.config.locale.time)
-                        //			data.nightTime = disappearTime.hour() < 8 || disappearTime.hour() >= 20
-                        data.nightTime = disappearTime.hour() < sunrise() || disappearTime.hour() >= sunset()
+                        const date = Date.now()
+                        const times = SunCalc.getTimes(date, data.latitude, data.longitude)
+			//			data.nightTime = disappearTime.hour() < 8 || disappearTime.hour() >= 20
+                        data.nightTime = disappearTime.hour() < times.sunrise || disappearTime.hour() >= times.sunrise
 			data.confirmedTime = data.disappear_time_verified
 			data.distime = data.disappearTime // deprecated
 			data.individual_attack = data.atk // deprecated
