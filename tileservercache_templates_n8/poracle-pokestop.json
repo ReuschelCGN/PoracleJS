@@ -1,9 +1,5 @@
 {
-    #if(nightTime != nil && nightTime == true && ((gruntTypeId != nil && gruntTypeId < 40) || (gruntTypeId != nil && gruntTypeId > 46))):
-      "style": "dark-night",
-    #else:
-      "style": "klokantech-basic",
-    #endif
+    "style": #if(nightTime == true && ((gruntTypeId != nil && gruntTypeId < 40) || (gruntTypeId != nil && gruntTypeId > 46))): "dark-night" #else: "klokantech-basic" #endif,
     "latitude": #(latitude),
     "longitude": #(longitude),
     "zoom": 15,
