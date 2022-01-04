@@ -106,6 +106,9 @@ class Gym extends Controller {
 			data.mapurl = data.googleMapUrl // deprecated
 			data.distime = data.disappearTime // deprecated
 
+			const conqueredTime = moment(Date.now() * 1000).tz(geoTz.find(data.latitude, data.longitude).toString())
+			data.conqueredTime = conqueredTime.format(this.config.locale.time)
+
 			// Stop handling if it already disappeared or is about to go away
 			if (data.tth.firstDateWasLater || ((data.tth.hours * 3600) + (data.tth.minutes * 60) + data.tth.seconds) < minTth) {
 				this.log.debug(`${data.id} Gym already disappeared or is about to go away in: ${data.tth.hours}:${data.tth.minutes}:${data.tth.seconds}`)
@@ -160,7 +163,12 @@ class Gym extends Controller {
 					const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
 					const jobs = []
 
-					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl'])
+					const sunsetTime = moment(getSunset(data.latitude, data.longitude, conqueredTime.toDate()))
+					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, conqueredTime.toDate()))
+
+					data.nightTime = !conqueredTime.isBetween(sunriseTime, sunsetTime)
+
+					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl', 'nightTime'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
