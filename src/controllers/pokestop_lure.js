@@ -145,7 +145,7 @@ class Lure extends Controller {
 
 					data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
 
-					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'lureTypeId', 'nightTime'])
+					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'lureTypeId'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
