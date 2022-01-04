@@ -1,5 +1,8 @@
 const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
+require('moment-precise-range-plugin')
+const { getSunrise, getSunset } = require('sunrise-sunset-js')
+
 const Controller = require('./controller')
 
 class Invasion extends Controller {
@@ -153,7 +156,12 @@ class Invasion extends Controller {
 					const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
 					const jobs = []
 
-					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'gruntTypeId'])
+					const sunsetTime = moment(getSunset(data.latitude, data.longitude, disappearTime.toDate()))
+					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, disappearTime.toDate()))
+
+					data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
+
+					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'gruntTypeId', 'nightTime'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
