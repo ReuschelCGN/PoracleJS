@@ -1,5 +1,8 @@
 const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
+require('moment-precise-range-plugin')
+const { getSunrise, getSunset } = require('sunrise-sunset-js')
+
 const Controller = require('./controller')
 
 class Raid extends Controller {
@@ -241,7 +244,12 @@ class Raid extends Controller {
 						})
 						const jobs = []
 
-						await this.getStaticMapUrl(logReference, data, 'raid', ['pokemon_id', 'latitude', 'longitude', 'form', 'level', 'imgUrl'])
+						const sunsetTime = moment(getSunset(data.latitude, data.longitude, disappearTime.toDate()))
+						const sunriseTime = moment(getSunrise(data.latitude, data.longitude, disappearTime.toDate()))
+
+						data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
+
+						await this.getStaticMapUrl(logReference, data, 'raid', ['pokemon_id', 'latitude', 'longitude', 'form', 'level', 'imgUrl', 'nightTime'])
 						data.staticmap = data.staticMap // deprecated
 
 						for (const cares of whoCares) {
@@ -399,7 +407,12 @@ class Raid extends Controller {
 					const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
 					const jobs = []
 
-					await this.getStaticMapUrl(logReference, data, 'raid', ['latitude', 'longitude', 'level', 'imgUrl'])
+					const sunsetTime = moment(getSunset(data.latitude, data.longitude, disappearTime.toDate()))
+					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, disappearTime.toDate()))
+
+					data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
+
+					await this.getStaticMapUrl(logReference, data, 'raid', ['latitude', 'longitude', 'level', 'imgUrl', 'nightTime'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
