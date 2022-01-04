@@ -409,10 +409,10 @@ class Raid extends Controller {
 					const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
 					const jobs = []
 
-					const sunsetTime = moment(getSunset(data.latitude, data.longitude, hatchtime.toDate()))
-					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, hatchtime.toDate()))
+					const sunsetTime = moment(getSunset(data.latitude, data.longitude, hatchTime.toDate()))
+					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, hatchTime.toDate()))
 
-					data.nightTime = !hatchtime.isBetween(sunriseTime, sunsetTime)
+					data.nightTime = !hatchTime.isBetween(sunriseTime, sunsetTime)
 
 					await this.getStaticMapUrl(logReference, data, 'raid', ['latitude', 'longitude', 'level', 'imgUrl', 'nightTime'])
 					data.staticmap = data.staticMap // deprecated
