@@ -160,12 +160,7 @@ class Gym extends Controller {
 					const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
 					const jobs = []
 
-					const sunsetTime = moment(getSunset(data.latitude, data.longitude, disappearTime.toDate()))
-					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, disappearTime.toDate()))
-
-					data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
-
-					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl', 'nightTime'])
+					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
