@@ -162,7 +162,7 @@ class Invasion extends Controller {
 
 					data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
 
-					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'gruntTypeId', 'nightTime'])
+					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'gruntTypeId'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
