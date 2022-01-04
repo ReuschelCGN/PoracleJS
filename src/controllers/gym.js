@@ -1,10 +1,13 @@
-// const geoTz = require('geo-tz')
-// const moment = require('moment-timezone')
+const geoTz = require('geo-tz')
+const moment = require('moment-timezone')
+require('moment-precise-range-plugin')
+const { getSunrise, getSunset } = require('sunrise-sunset-js')
+
 const Controller = require('./controller')
 
 /**
  * Controller for processing gym webhooks
- * Alerts on lures
+ * Alerts on Team change
  */
 class Gym extends Controller {
 	async gymWhoCares(data) {
@@ -157,7 +160,12 @@ class Gym extends Controller {
 					const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
 					const jobs = []
 
-					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl'])
+					const sunsetTime = moment(getSunset(data.latitude, data.longitude, disappearTime.toDate()))
+					const sunriseTime = moment(getSunrise(data.latitude, data.longitude, disappearTime.toDate()))
+
+					data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
+
+					await this.getStaticMapUrl(logReference, data, 'gym', ['teamId', 'latitude', 'longitude', 'imgUrl', 'nightTime'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
