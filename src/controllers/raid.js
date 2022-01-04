@@ -250,7 +250,7 @@ class Raid extends Controller {
 
 						data.nightTime = !disappearTime.isBetween(sunriseTime, sunsetTime)
 
-						await this.getStaticMapUrl(logReference, data, 'raid', ['pokemon_id', 'latitude', 'longitude', 'form', 'level', 'imgUrl', 'nightTime'])
+						await this.getStaticMapUrl(logReference, data, 'raid', ['pokemon_id', 'latitude', 'longitude', 'form', 'level', 'imgUrl'])
 						data.staticmap = data.staticMap // deprecated
 
 						for (const cares of whoCares) {
@@ -414,7 +414,7 @@ class Raid extends Controller {
 
 					data.nightTime = !hatchTime.isBetween(sunriseTime, sunsetTime)
 
-					await this.getStaticMapUrl(logReference, data, 'raid', ['latitude', 'longitude', 'level', 'imgUrl', 'nightTime'])
+					await this.getStaticMapUrl(logReference, data, 'raid', ['latitude', 'longitude', 'level', 'imgUrl'])
 					data.staticmap = data.staticMap // deprecated
 
 					for (const cares of whoCares) {
