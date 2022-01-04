@@ -241,7 +241,7 @@ class Monster extends Controller {
                         const date = Date.now()
                         const times = SunCalc.getTimes(date, data.latitude, data.longitude)
 			//			data.nightTime = disappearTime.hour() < 8 || disappearTime.hour() >= 20
-                        data.nightTime = disappearTime.hour() < times.sunrise || disappearTime.hour() >= times.sunrise
+                        data.nightTime = disappearTime.hour() < times.sunrise || disappearTime.hour() >= times.sunset
 			data.confirmedTime = data.disappear_time_verified
 			data.distime = data.disappearTime // deprecated
 			data.individual_attack = data.atk // deprecated
