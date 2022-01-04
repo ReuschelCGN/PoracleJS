@@ -1,5 +1,5 @@
 {
-    #if(nightTime == true): "dark-night" #else: "klokantech-basic" #endif,
+    "style": #if(nightTime == true): "dark-night" #else: "klokantech-basic" #endif,
     "latitude": #(latitude),
     "longitude": #(longitude),
     "zoom": 15,
