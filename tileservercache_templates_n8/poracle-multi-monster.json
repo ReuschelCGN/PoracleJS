@@ -6,11 +6,7 @@
                 {
                     "direction": "first",
                     "map": {
-                        #if(nightTime != nil && nightTime == true):
-                          "style": "dark-night",
-                        #else:
-                          "style": "klokantech-basic",
-                        #endif
+                        #if(nightTime == true): "dark-night" #else: "klokantech-basic" #endif,
                         "latitude": #(latitude),
                         "longitude": #(longitude),
                         "zoom": 15,
