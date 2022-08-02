@@ -71,12 +71,12 @@ class Quest extends Controller {
 						quest.distance = 0 and (${areastring})
 					)
 			)
-			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, quest.distance, quest.clean, quest.ping, quest.template
+			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, quest.distance, quest.clean, quest.ping, quest.template, quest.ar
 			`)
 		} else {
 			query = query.concat(`
 				and ((quest.distance = 0 and (${areastring})) or quest.distance > 0)
-			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, quest.distance, quest.clean, quest.ping, quest.template
+			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, quest.distance, quest.clean, quest.ping, quest.template, quest.ar
 			`)
 		}
 
