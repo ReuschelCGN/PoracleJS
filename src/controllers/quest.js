@@ -18,7 +18,7 @@ class Quest extends Controller {
 		const { areastring, strictareastring } = this.buildAreaString(data.matched)
 
 		let query = `
-		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, quest.distance, quest.clean, quest.ping, quest.template from quest
+		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, quest.distance, quest.clean, quest.ping, quest.template, quest.ar from quest
 		join humans on (humans.id = quest.id and humans.current_profile_no = quest.profile_no)
 		where humans.enabled = 1 and humans.admin_disable = false and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%quest%') 
 		${strictareastring}
