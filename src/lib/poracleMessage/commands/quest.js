@@ -46,7 +46,7 @@ exports.run = async (client, msg, args, options) => {
 		const questTracks = []
 		let template = client.config.general.defaultTemplateName
 		let mustShiny = 0
-		let filterAR = 0
+		let filterAR = both
 		let remove = false
 		let minDust = 10000000
 		let stardustTracking = 9999999
@@ -128,7 +128,7 @@ exports.run = async (client, msg, args, options) => {
 				if (+candyMonster > 0) candyMonsters.push(candyMonster)
 			} else if (element === 'candy') {
 				candyMonsters.push('0')
-			} else if (((element === 'withar') filterAR = 1) else if ((element === 'noar') filterAR = 2) else if (((element === 'withar') & (element === 'noar')) filterAR = 0))
+			} else if (((element === 'withar') filterAR = true) else if ((element === 'noar') filterAR = false) else if (((element === 'withar') & (element === 'noar')) filterAR = both))
 			else if (element === 'shiny') mustShiny = 1
 			else if (element === 'remove') remove = true
 			else if (element === 'clean') clean = true
