@@ -389,7 +389,7 @@ class Weather extends Controller {
 						}
 					if (data.activePokemons && this.imgUiconsAlt) {
 						for (const mon of data.activePokemons) {
-							mon.imgUrl = await this.imgUiconsAlt.pokemonIcon(mon.pokemon_id, mon.form)
+							mon.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(mon.pokemon_id, mon.form)
 						}
 					}
 				}
