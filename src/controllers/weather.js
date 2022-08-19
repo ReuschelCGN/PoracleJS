@@ -387,10 +387,8 @@ class Weather extends Controller {
 						for (const mon of data.activePokemons) {
 							mon.imgUrl = await this.imgUicons.pokemonIcon(mon.pokemon_id, mon.form)
 						}
-					}
-					data.activePokemonsAlt = activePokemons.slice(0, this.config.weather.showAlteredPokemonMaxCount) || null
-					if (data.activePokemonsAlt && this.imgUiconsAlt) {
-						for (const mon of data.activePokemonsAlt) {
+					if (data.activePokemons && this.imgUiconsAlt) {
+						for (const mon of data.activePokemons) {
 							mon.imgUrl = await this.imgUiconsAlt.pokemonIcon(mon.pokemon_id, mon.form)
 						}
 					}
