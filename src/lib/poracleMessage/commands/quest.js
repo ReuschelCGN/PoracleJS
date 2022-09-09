@@ -128,8 +128,12 @@ exports.run = async (client, msg, args, options) => {
 				if (+candyMonster > 0) candyMonsters.push(candyMonster)
 			} else if (element === 'candy') {
 				candyMonsters.push('0')
-			} else if (((element === 'withar') filterAR = true) else if ((element === 'noar') filterAR = false) else if (((element === 'withar') & (element === 'noar')) filterAR = both))
-			else if (element === 'shiny') mustShiny = 1
+			} else if ((element === 'withar') filterAR = true)
+			else if ((element === 'noar') filterAR = false)
+			else if ((element === 'both') filterAR = both)
+			else if ((element === 'withar') & (element === 'noar')) {
+				filterAR = both
+			} else if (element === 'shiny') mustShiny = 1
 			else if (element === 'remove') remove = true
 			else if (element === 'clean') clean = true
 		})
