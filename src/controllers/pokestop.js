@@ -112,12 +112,17 @@ class Invasion extends Controller {
 
 			data.gruntTypeId = 0
 			if (data.incident_grunt_type && (data.incident_grunt_type !== 352)) {
-				data.gruntTypeId = data.incident_grunt_type
+				data.gruntTypeId = data.incident_grunt_type // MAD Master Grunt
+			} else if (data.character_display && (data.incident_display_type == 1)) {
+				data.gruntTypeId = data.character_display // MAD Async Grunt
 			} else if (data.grunt_type && (data.display_type == 1)) {
-				data.gruntTypeId = data.grunt_type
+				data.gruntTypeId = data.grunt_type // RDM Grunt
 			} else if (data.incident_grunt_type == 352) {
-				data.grunt_type = 0
+				data.grunt_type = 0 // MAD Master EventStop
 				data.display_type = 8
+			} else if (data.incident_display_type != 1) {
+				data.grunt_type = 0 // MAD Async EventStop
+				data.display_type = data.incident_display_type
 			}
 
 			data.gruntTypeColor = 'BABABA'
@@ -146,8 +151,8 @@ class Invasion extends Controller {
 			// Event invasions
 			if ((data.grunt_type == 0) && (data.display_type !== 1)) {
 				data.gender = 0
-				data.gruntName = data.display_type && this.GameData.utilData.event[data.display_type] ? this.GameData.utilData.event[data.display_type] : ''
-				data.gruntType = data.display_type && this.GameData.utilData.event[data.display_type] ? this.GameData.utilData.event[data.display_type].toLowerCase() : ''
+				data.gruntName = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type] : ''
+				data.gruntType = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type].toLowerCase() : ''
 				data.gruntRewards = ''
 			}
 			data.displayTypeId = data.display_type
