@@ -146,8 +146,7 @@ class Invasion extends Controller {
 			// Event invasions
 			if ((data.grunt_type == 0) && (data.display_type >= 7)) {
 				data.gender = 0
-				data.gruntNameEng = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type] : ''
-				data.gruntName = translator.translate(data.gruntNameEng)
+				data.gruntName = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type] : ''
 				data.gruntType = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type].toLowerCase() : ''
 				data.gruntRewards = ''
 			}
@@ -220,6 +219,10 @@ class Invasion extends Controller {
 
 						data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup('grunt-unknown', platform))
 						require('./common/weather').setGameWeather(data, translator, this.GameData, this.emojiLookup, platform, currentCellWeather)
+
+						if ((data.grunt_type == 0) && (data.display_type >= 7)) {
+							data.gruntName = translator.translate(data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type] : '')
+						}
 
 						// full build
 						if (data.gruntTypeId) {
