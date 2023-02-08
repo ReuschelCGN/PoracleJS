@@ -146,7 +146,7 @@ class Invasion extends Controller {
 			// Event invasions
 			if ((data.grunt_type == 0) && (data.display_type >= 7)) {
 				data.gender = 0
-				data.gruntName = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type] : ''
+				data.gruntName = translator.translate(data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type] : '')
 				data.gruntType = data.display_type && this.GameData.utilData.pokestopEvent[data.display_type] ? this.GameData.utilData.pokestopEvent[data.display_type].toLowerCase() : ''
 				data.gruntRewards = ''
 			}
