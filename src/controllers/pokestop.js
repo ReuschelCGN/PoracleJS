@@ -97,7 +97,7 @@ class Invasion extends Controller {
 			data.applemap = data.appleMapUrl // deprecated
 			data.mapurl = data.googleMapUrl // deprecated
 			data.distime = data.disappearTime // deprecated
-			data.displayTypeId = data.display_type ?? data.incident_display_type
+			data.displayTypeId = data.display_type ?? data.incident_display_type ?? 0
 
 			// Stop handling if it already disappeared or is about to go away
 			if (data.tth.firstDateWasLater || ((data.tth.hours * 3600) + (data.tth.minutes * 60) + data.tth.seconds) < minTth) {
