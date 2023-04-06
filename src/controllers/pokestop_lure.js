@@ -158,6 +158,8 @@ class Lure extends Controller {
 
 					require('./common/nightTime').setNightTime(data, disappearTime)
 
+					data.intersection = await this.obtainIntersection(data)
+
 					await this.getStaticMapUrl(logReference, data, 'pokestop', ['latitude', 'longitude', 'imgUrl', 'lureTypeId'])
 					data.staticmap = data.staticMap // deprecated
 
