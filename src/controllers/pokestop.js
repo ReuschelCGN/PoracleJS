@@ -84,6 +84,9 @@ class Invasion extends Controller {
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
 			}
+			if (this.config.general.pmsfMapURL) {
+				data.pmsfMapUrl = `${this.config.general.pmsfMapURL}${!this.config.general.pmsfMapURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18&stopId=${data.pokestop_id}`
+			}
 			data.name = data.name ? this.escapeJsonString(data.name) : this.escapeJsonString(data.pokestop_name)
 			data.pokestopName = data.name
 			data.url = data.url || this.config.fallbacks?.pokestopUrl
@@ -237,8 +240,8 @@ class Invasion extends Controller {
 								if (!data.genderDataEng) {
 									data.genderDataEng = { name: '', emoji: '' }
 								}
-								if (this.GameData.utilData.types[gruntType.type]) {
-									data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.types[gruntType.type].emoji, platform))
+								if (this.GameData.utilData.types[gruntType.type === 'Metal' ? 'Steel' : gruntType.type]) {
+									data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.types[gruntType.type === 'Metal' ? 'Steel' : gruntType.type].emoji, platform))
 								}
 								if (gruntType.type in this.GameData.utilData.types) {
 									data.gruntTypeColor = this.GameData.utilData.types[gruntType.type].color
