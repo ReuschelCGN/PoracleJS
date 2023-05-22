@@ -5,6 +5,7 @@
 
 const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
+const path = require('path')
 const Controller = require('./controller')
 const { log } = require('../lib/logger')
 const { questTypes } = require('../lib/GameData')
@@ -141,6 +142,10 @@ class Quest extends Controller {
 				return []
 			}
 
+			if (data.title && this.config.general.useRDMQuestString) {
+				data.questStringRaw = 'quest_title_' + data.title
+				data.questStringRaw = (data.title != '') ? data.questStringRaw : `quest_0`
+			}
 			data.questStringEng = await this.getQuest(data)
 			data.rewardData = await this.getReward(logReference, data)
 			this.log.debug(`${logReference} Quest: data.questString: ${data.questStringEng}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
@@ -251,10 +256,25 @@ class Quest extends Controller {
 
 				const language = cares.language || this.config.general.locale
 				const translator = this.translatorFactory.Translator(language)
+				const questI18l = require(path.join(__dirname, `../util/locale/i18n_${language}.json`))
+				const questI18lEng = require(path.join(__dirname, `../util/locale/i18n_en.json`))
 				let [platform] = cares.type.split(':')
 				if (platform === 'webhook') platform = 'discord'
 
-				data.questString = translator.translate(data.questStringEng)
+				if (data.questStringRaw && this.config.general.useRDMQuestString) {
+					try {
+						data.questString = questI18l[data.questStringRaw]
+						data.questStringEng = questI18lEng[data.questStringRaw]
+						if (data.title.toLowerCase().includes('_plural') && data.target) {
+							data.questString = data.questString.replace('%{amount_0}', data.target)
+							data.questStringEng = data.questStringEng.replace('%{amount_0}', data.target)
+						}
+					} catch {
+						data.questString = questI18l['quest_0']
+					}
+				} else {
+					data.questString = translator.translate(data.questStringEng)
+				}
 
 				for (const monster of data.rewardData.monsters) {
 					let monsterName
