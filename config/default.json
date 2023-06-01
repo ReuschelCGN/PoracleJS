@@ -73,7 +73,7 @@
     // library of custom DTS templates
       "dtsDictionary": {},
     // Queststring i18n translation for RDM systems
-      "useIngameQuestString": true,
+      "useRDMQuestString": false,
     // Short link provider - supported hideuri, shlink, yourls
       "shortlinkProvider": "hideuri",
       "shortlinkProviderURL": "",
