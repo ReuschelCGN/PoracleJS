@@ -5,7 +5,6 @@
 
 const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
-const path = require('path')
 const Controller = require('./controller')
 const { log } = require('../lib/logger')
 const { questTypes } = require('../lib/GameData')
@@ -118,9 +117,6 @@ class Quest extends Controller {
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
 			}
-			if (this.config.general.pmsfMapURL) {
-				data.pmsfMapUrl = `${this.config.general.pmsfMapURL}${!this.config.general.pmsfMapURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18&stopId=${data.pokestop_id}`
-			}
 			data.intersection = await this.obtainIntersection(data)
 			data.disappearTime = moment.tz(new Date(), this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString()).endOf('day')
 			data.applemap = data.appleMapUrl // deprecated
@@ -142,10 +138,6 @@ class Quest extends Controller {
 				return []
 			}
 
-			if (data.title && this.config.general.useIngameQuestString) {
-				data.questStringRaw = 'quest_title_' + data.title
-				data.questStringRaw = (data.title != '') ? data.questStringRaw : `quest_0`
-			}
 			data.questStringEng = await this.getQuest(data)
 			data.rewardData = await this.getReward(logReference, data)
 			this.log.debug(`${logReference} Quest: data.questString: ${data.questStringEng}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
@@ -256,25 +248,10 @@ class Quest extends Controller {
 
 				const language = cares.language || this.config.general.locale
 				const translator = this.translatorFactory.Translator(language)
-				const questI18n = require(path.join(__dirname, `../util/locale/i18n_${language}.json`))
-				const questI18nEng = require(path.join(__dirname, `../util/locale/i18n_en.json`))
 				let [platform] = cares.type.split(':')
 				if (platform === 'webhook') platform = 'discord'
 
-				if (data.questStringRaw && this.config.general.useIngameQuestString) {
-					try {
-						data.questString = questI18n[data.questStringRaw]
-						data.questStringEng = questI18nEng[data.questStringRaw]
-						if (data.title.toLowerCase().includes('_plural') && data.target) {
-							data.questString = data.questString.replace('%{amount_0}', data.target)
-							data.questStringEng = data.questStringEng.replace('%{amount_0}', data.target)
-						}
-					} catch {
-						data.questString = questI18n['quest_0']
-					}
-				} else {
-					data.questString = translator.translate(data.questStringEng)
-				}
+				data.questString = translator.translate(data.questStringEng)
 
 				for (const monster of data.rewardData.monsters) {
 					let monsterName
