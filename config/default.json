@@ -70,17 +70,21 @@
       },
      // default template name/number to use when users add new trackings
      "defaultTemplateName": 1,
-    // library of custom DTS templates
+   // library of custom DTS templates
       "dtsDictionary": {},
+    // Queststring translation with masterfile
+    // Information to users when task for quest is unknown
+      "unknownQuestString": "unknown",
     // Short link provider - supported hideuri, shlink, yourls
       "shortlinkProvider": "hideuri",
       "shortlinkProviderURL": "",
       "shortlinkProviderKey": "",
       "shortlinkProviderDomain": "",           // if supported, select domain to be used
-    // additional Shortlinks to Pogo Maps in DTS - supported RDM, Reactmap, RocketMAD
+    // additional Shortlinks to Pogo Maps in DTS - supported RDM, Reactmap, RocketMAD, PMSF
       "rdmURL": "",                // https://myRDM.com/
       "reactMapURL": "",           // https://myReactMap.com/
-      "rocketMadURL": ""           // https://myRocketMAD.com/
+      "rocketMadURL": "",          // https://myRocketMAD.com/
+      "pmsfMapURL": ""             // https://myPMSFMap.com/
   },
   //
   // Configuration for the user reconciliation/role check function
