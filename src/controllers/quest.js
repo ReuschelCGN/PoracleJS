@@ -390,14 +390,15 @@ class Quest extends Controller {
 			item.quest_title = item.title
 		}
 		const questinfo = `quest_title_${item.title}`
+		const language = cares.language || this.config.general.locale
 		if (item.title) {
 			try {
-				str = translations[this.config.general.locale].questTitles[questinfo]
+				str = translations[language].questTitles[questinfo]
 				if (item.title.toLowerCase().includes('_plural') && item.target) {
 					str = str.replace('{{amount_0}}', item.target)
 				}
 			} catch {
-				str = translations[this.config.general.locale].questTypes['quest_0']
+				str = translations[language].questTypes['quest_0']
 				this.log.warn(`Missing Task for ${questinfo}`)
 			}
 		}
