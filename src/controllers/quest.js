@@ -389,6 +389,7 @@ class Quest extends Controller {
 		if (item.title) {
 			item.quest_title = item.title
 		}
+		const questinfo = `quest_title_${item.title}`
 		if (item.title) {
 			try {
 				str = translations[this.config.general.locale].questTitles[questinfo]
