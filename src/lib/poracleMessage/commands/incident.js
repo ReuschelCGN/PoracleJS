@@ -37,7 +37,7 @@ exports.run = async (client, msg, args, options) => {
 		}
 
 		const typeArray = Object.values(client.GameData.grunts).map((grunt) => grunt.type.toLowerCase())
-		const eventArray = Object.values(client.GameData.utilData.pokestopEvent).map((x) => x.toLowerCase())
+		const eventArray = Object.values(client.GameData.utilData.pokestopEvent).map((x) => x.name.toLowerCase())
 
 		let reaction = '👌'
 		const remove = !!args.find((arg) => arg === 'remove')
