@@ -931,11 +931,26 @@
 		"south":"\u2b07\ufe0f",
 		"southeast": "\u2199\ufe0f",
 		"east": "\u2b05\ufe0f",
-		"northeast": "\u2196\ufe0f"
+		"northeast": "\u2196\ufe0f",
+		"gold-coin": "🪙",
+		"lizard": "🦎",
+		"trophy": "🏆"
 	},
 	"pokestopEvent": {
-		"7": "Gold-Stop",
-		"8": "Kecleon",
-		"9": "Showcase"
+		"7": {
+			"name": "Gold-Stop",
+			"color": "F9E418",
+			"emoji": "gold-coin"
+		},
+		"8": {
+			"name": "Kecleon",
+			"color": "B3CA78",
+			"emoji": "lizard"
+		},
+		"9": {
+			"name": "Showcase",
+			"color": "03AEB6",
+			"emoji": "trophy"
+		}
 	}
 }
