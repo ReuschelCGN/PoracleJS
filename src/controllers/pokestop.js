@@ -220,6 +220,7 @@ class Invasion extends Controller {
 						if (platform === 'webhook') platform = 'discord'
 
 						data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup('grunt-unknown', platform))
+						data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.pokestopEvent[data.displayTypeId].emoji, platform))
 						require('./common/weather').setGameWeather(data, translator, this.GameData, this.emojiLookup, platform, currentCellWeather)
 
 						if (((data.grunt_type === 0) || !data.grunt_type) && (data.displayTypeId >= 7)) {
