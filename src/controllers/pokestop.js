@@ -148,6 +148,7 @@ class Invasion extends Controller {
 				data.gruntName = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].name ? this.GameData.utilData.pokestopEvent[data.displayTypeId].name : ''
 				data.gruntType = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].name ? this.GameData.utilData.pokestopEvent[data.displayTypeId].name.toLowerCase() : ''
 				data.gruntRewards = ''
+				data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.pokestopEvent[data.displayTypeId].emoji, platform))
 				data.gruntTypeColor = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].color ? this.GameData.utilData.pokestopEvent[data.displayTypeId].color : 'BABABA'
 			}
 
