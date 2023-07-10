@@ -121,8 +121,6 @@ class Invasion extends Controller {
 				data.displayTypeId = 8
 			}
 
-			data.gruntTypeColor = 'BABABA'
-
 			data.gender = 0
 			data.gruntName = ''
 			data.gruntTypeColor = 'BABABA'
@@ -150,6 +148,13 @@ class Invasion extends Controller {
 				data.gruntName = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId] ? this.GameData.utilData.pokestopEvent[data.displayTypeId] : ''
 				data.gruntType = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId] ? this.GameData.utilData.pokestopEvent[data.displayTypeId].toLowerCase() : ''
 				data.gruntRewards = ''
+				if (data.displayTypeId === 7) {
+					data.gruntTypeColor = 'B3CA78'
+				} else if (data.displayTypeId === 8) {
+					data.gruntTypeColor = 'F9E418'
+				} else if (data.displayTypeId === 9) {
+					data.gruntTypeColor = '03AEB6'
+				}
 			}
 
 			const whoCares = data.poracleTest ? [{
