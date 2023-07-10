@@ -148,7 +148,6 @@ class Invasion extends Controller {
 				data.gruntName = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].name ? this.GameData.utilData.pokestopEvent[data.displayTypeId].name : ''
 				data.gruntType = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].name ? this.GameData.utilData.pokestopEvent[data.displayTypeId].name.toLowerCase() : ''
 				data.gruntRewards = ''
-			//	data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.pokestopEvent[data.displayTypeId].emoji, platform))
 				data.gruntTypeColor = data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].color ? this.GameData.utilData.pokestopEvent[data.displayTypeId].color : 'BABABA'
 			}
 
@@ -220,11 +219,11 @@ class Invasion extends Controller {
 						if (platform === 'webhook') platform = 'discord'
 
 						data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup('grunt-unknown', platform))
-						data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.pokestopEvent[data.displayTypeId].emoji, platform))
 						require('./common/weather').setGameWeather(data, translator, this.GameData, this.emojiLookup, platform, currentCellWeather)
 
 						if (((data.grunt_type === 0) || !data.grunt_type) && (data.displayTypeId >= 7)) {
 							data.gruntName = translator.translate(data.displayTypeId && this.GameData.utilData.pokestopEvent[data.displayTypeId].name ? this.GameData.utilData.pokestopEvent[data.displayTypeId].name : '')
+							data.gruntTypeEmoji = translator.translate(this.emojiLookup.lookup(this.GameData.utilData.pokestopEvent[data.displayTypeId].emoji, platform))
 						}
 
 						// full build
