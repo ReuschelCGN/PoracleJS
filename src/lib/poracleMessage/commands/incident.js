@@ -29,7 +29,7 @@ exports.run = async (client, msg, args, options) => {
 
 		if (args.length === 0) {
 			await msg.reply(
-				translator.translateFormat('Valid commands are e.g. `{0}invasion giovanni`, `{0}invasion dragon`, `{0}invasion remove everything`', util.prefix),
+				translator.translateFormat('Valid commands are e.g. `{0}incident giovanni`, `{0}incident dragon`, `{0}incident remove everything`', util.prefix),
 				{ style: 'markdown' },
 			)
 			await helpCommand.provideSingleLineHelp(client, msg, util, language, target, commandName)
