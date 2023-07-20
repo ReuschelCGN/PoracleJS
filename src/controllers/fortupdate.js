@@ -138,8 +138,8 @@ class FortUpdate extends Controller {
 			}
 
 			if (data.old) {
-				if (data.old.name) data.new.name = this.escapeJsonString(data.old.name)
-				if (data.old.description) data.new.description = this.escapeJsonString(data.old.description)
+				if (data.old.name) data.old.name = this.escapeJsonString(data.old.name)
+				if (data.old.description) data.old.description = this.escapeJsonString(data.old.description)
 			}
 
 			// helpers
