@@ -221,8 +221,6 @@ class FortUpdate extends Controller {
 				return []
 			}
 
-			data.shinyPossible = this.shinyPossible.isShinyPossible(data.pokemonId, data.formId)
-
 			data.stickerUrl = data.imgUrl
 
 			const geoResult = await this.getAddress({ lat: data.latitude, lon: data.longitude })
@@ -244,7 +242,7 @@ class FortUpdate extends Controller {
 			data.map_longitude = position.longitude
 			data.map_latitude = position.latitude
 
-			await this.getStaticMapUrl(logReference, data, 'fort-update', ['map_latitude', 'map_longitude', 'zoom', 'imgUrl', 'isEditLocation', 'oldLatitude', 'oldLongitude', 'newLatitude', 'newLongitude'])
+			await this.getStaticMapUrl(logReference, data, 'fort-update', ['map_latitude', 'map_longitude', 'latitude', 'longitude', 'zoom', 'imgUrl', 'isEditLocation', 'oldLatitude', 'oldLongitude', 'newLatitude', 'newLongitude'])
 			data.staticmap = data.staticMap // deprecated
 
 			for (const cares of whoCares) {
