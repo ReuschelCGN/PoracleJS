@@ -181,7 +181,6 @@
   {
     "type": "fort_update",
     "test": "editdescimg",
-    "test": "keep",
     "location": "current",
     "webhook": {"change_type": "edit", "edit_types": ["description", "image_url"], "new": {"id": "f7430347f5c34facb838be376f16adea.16", "type": "pokestop", "name": "Journey Through Trees And Time", "description": "A beautiful trip through time, trees, and space", "image_url": "http://lh3.googleusercontent.com/VSBh5Q5W6z5LHBLDFQqBNtCTBxqe0HAy4H9W_Um2_AVUg8Rh40u1tYteSc2TVLtPAd4v7c83umdTh6RUVNpOkACjt9saHNj6a_2XYRsGYg", "location": {"lat": 50.975396, "lon": 6.943889}}, "old": {"id": "f7430347f5c34facb838be376f16adea.16", "type": "pokestop", "name": "Journey Through Trees And Time", "description": "An ancient trip through time and space", "image_url": "http://lh3.googleusercontent.com/rJyk2-h9rXdl_jLpM48bRQ5UeO0RL7Foa1oP2SjoIMWbKJdC3DQBhsGCRME367qobgc3neXlZhwv5uxeUiwiLuk-KFfC", "location": {"lat": 50.975396, "lon": 6.943889}}}
   },
