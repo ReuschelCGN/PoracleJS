@@ -387,20 +387,24 @@ class Quest extends Controller {
 
 	async getQuest(item, language) {
 		let str
-		if (item.title) {
-			item.quest_title = item.title
-		}
-		const questinfo = `quest_title_${item.title}`
-		const questTitle = this.GameData.translations[language].questTitles
-		if (item.title) {
-			try {
-				str = questTitle[questinfo]
-				if (item.title.toLowerCase().includes('_plural') && item.target) {
-					str = str.replace('{{amount_0}}', item.target)
+		if (item.quest_task && !this.config.general.ignoreMADQuestString) {
+			str = item.quest_task
+		} else {
+			if (item.title) {
+				item.quest_title = item.title
+			}
+			const questinfo = `quest_title_${item.title}`
+			const questTitle = this.GameData.translations[language].questTitles
+			if (item.title) {
+				try {
+					str = questTitle[questinfo]
+					if (item.title.toLowerCase().includes('_plural') && item.target) {
+						str = str.replace('{{amount_0}}', item.target)
+					}
+				} catch {
+					str = this.GameData.translations[language].questTypes['quest_0']
+					this.log.warn(`Missing Task for ${questinfo}`)
 				}
-			} catch {
-				str = this.GameData.translations[language].questTypes['quest_0']
-				this.log.warn(`Missing Task for ${questinfo}`)
 			}
 		}
 		return str
