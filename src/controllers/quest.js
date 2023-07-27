@@ -398,7 +398,7 @@ class Quest extends Controller {
 			if (item.title) {
 				try {
 					str = questTitle[questinfo]
-					if (item.title.toLowerCase().includes('_plural') && item.target) {
+					if (str.toLowerCase().includes('{{amount_0}}') && item.target) {
 						str = str.replace('{{amount_0}}', item.target)
 					}
 				} catch {
