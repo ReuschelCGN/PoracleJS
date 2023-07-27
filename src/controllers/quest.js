@@ -7,7 +7,6 @@ const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
 const Controller = require('./controller')
 const { log } = require('../lib/logger')
-const { translations } = require('../lib/GameData')
 
 class Quest extends Controller {
 	async questWhoCares(data) {
@@ -137,7 +136,7 @@ class Quest extends Controller {
 				return []
 			}
 
-			data.questStringEng = await this.getQuest(data)
+			data.questStringEng = await this.getQuest(data, "en")
 			data.rewardData = await this.getReward(logReference, data)
 			this.log.debug(`${logReference} Quest: data.questString: ${data.questStringEng}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
 			data.dustAmount = data.rewardData.dustAmount
@@ -249,8 +248,9 @@ class Quest extends Controller {
 				const translator = this.translatorFactory.Translator(language)
 				let [platform] = cares.type.split(':')
 				if (platform === 'webhook') platform = 'discord'
-
-				data.questString = translator.translate(data.questStringEng)
+				if (language !== this.config.general.locale) {
+					data.questString = await this.getQuest(data, language)
+				}
 
 				for (const monster of data.rewardData.monsters) {
 					let monsterName
@@ -384,20 +384,21 @@ class Quest extends Controller {
 		}
 	}
 
-	async getQuest(item) {
+	async getQuest(item, language) {
 		let str
 		if (item.title) {
 			item.quest_title = item.title
 		}
 		const questinfo = `quest_title_${item.title}`
+		const questTitle = this.GameData.translations[language].questTitles
 		if (item.title) {
 			try {
-				str = translations[this.config.general.locale].questTitles[questinfo]
+				str = questTitle[questinfo]
 				if (item.title.toLowerCase().includes('_plural') && item.target) {
 					str = str.replace('{{amount_0}}', item.target)
 				}
 			} catch {
-				str = translations[this.config.general.locale].questTypes['quest_0']
+				str = this.GameData.translations[language].questTypes['quest_0']
 				this.log.warn(`Missing Task for ${questinfo}`)
 			}
 		}
