@@ -112,6 +112,9 @@ class Quest extends Controller {
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
 			}
+			if (this.config.general.pmsfMapURL) {
+				data.pmsfMapUrl = `${this.config.general.pmsfMapURL}${!this.config.general.pmsfMapURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18&stopId=${data.pokestop_id}`
+			}
 			data.intersection = await this.obtainIntersection(data)
 			data.disappearTime = moment.tz(new Date(), this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString()).endOf('day')
 			data.applemap = data.appleMapUrl // deprecated
@@ -133,9 +136,9 @@ class Quest extends Controller {
 				return []
 			}
 
-			data.questString = await this.getQuest(data, this.config.general.locale)
+			data.questStringEng = await this.getQuest(data, "en")
 			data.rewardData = await this.getReward(logReference, data)
-			this.log.debug(`${logReference} Quest: data.questString: ${data.questString}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
+			this.log.debug(`${logReference} Quest: data.questString: ${data.questStringEng}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
 			data.dustAmount = data.rewardData.dustAmount
 			data.isShiny = data.rewardData.monsters.length > 0 ? data.rewardData.monsters[0].shiny : 0
 			data.shinyPossible = data.rewardData.monsters.length > 0 ? this.shinyPossible.isShinyPossible(data.rewardData.monsters[0].pokemonId, data.rewardData.monsters[0].formId) : false
@@ -388,15 +391,17 @@ class Quest extends Controller {
 		}
 		const questinfo = `quest_title_${item.title}`
 		const questTitle = this.GameData.translations[language].questTitles
-		if (questinfo) {
+		if (item.title) {
 			try {
 				str = questTitle[questinfo]
+				if (item.title.toLowerCase().includes('_plural') && item.target) {
+					str = str.replace('{{amount_0}}', item.target)
+				}
 			} catch {
-				str = this.config.general.unknownQuestString
+				str = this.GameData.translations[language].questTypes['quest_0']
 				this.log.warn(`Missing Task for ${questinfo}`)
 			}
 		}
-		str = str.replace('{{amount_0}}', item.target)
 		return str
 	}
 
