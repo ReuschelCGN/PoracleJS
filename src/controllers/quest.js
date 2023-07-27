@@ -136,9 +136,9 @@ class Quest extends Controller {
 				return []
 			}
 
-			data.questStringEng = await this.getQuest(data, "en")
+			data.questString = await this.getQuest(data, this.config.general.locale)
 			data.rewardData = await this.getReward(logReference, data)
-			this.log.debug(`${logReference} Quest: data.questString: ${data.questStringEng}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
+			this.log.debug(`${logReference} Quest: data.questString: ${data.questString}, data.rewardData: ${JSON.stringify(data.rewardData)}`)
 			data.dustAmount = data.rewardData.dustAmount
 			data.isShiny = data.rewardData.monsters.length > 0 ? data.rewardData.monsters[0].shiny : 0
 			data.shinyPossible = data.rewardData.monsters.length > 0 ? this.shinyPossible.isShinyPossible(data.rewardData.monsters[0].pokemonId, data.rewardData.monsters[0].formId) : false
@@ -391,17 +391,15 @@ class Quest extends Controller {
 		}
 		const questinfo = `quest_title_${item.title}`
 		const questTitle = this.GameData.translations[language].questTitles
-		if (item.title) {
+		if (questinfo) {
 			try {
 				str = questTitle[questinfo]
-				if (item.title.toLowerCase().includes('_plural') && item.target) {
-					str = str.replace('{{amount_0}}', item.target)
-				}
 			} catch {
-				str = this.GameData.translations[language].questTypes['quest_0']
+				str = 'Missing Task'
 				this.log.warn(`Missing Task for ${questinfo}`)
 			}
 		}
+		str = str.replace('{{amount_0}}', item.target)
 		return str
 	}
 
