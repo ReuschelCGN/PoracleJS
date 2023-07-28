@@ -362,7 +362,7 @@ class Quest extends Controller {
 				}
 
 				const templateType = 'quest'
-				const arFilter = cares.ar
+				const arFilter = cares.ar ? cares.ar : '0'
 				const message = await this.createMessage(logReference, templateType, platform, cares.template, language, cares.ping, view)
 
 				if (arFilter === '0' || (arFilter === '1' && !data.with_ar) || (arFilter === '2' && data.with_ar)) {
