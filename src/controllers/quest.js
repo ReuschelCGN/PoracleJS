@@ -362,21 +362,26 @@ class Quest extends Controller {
 				}
 
 				const templateType = 'quest'
+				const arFilter == cares.ar
 				const message = await this.createMessage(logReference, templateType, platform, cares.template, language, cares.ping, view)
 
-				const work = {
-					lat: data.latitude.toString().substring(0, 8),
-					lon: data.longitude.toString().substring(0, 8),
-					message,
-					target: cares.id,
-					type: cares.type,
-					name: cares.name,
-					tth: data.tth,
-					clean: cares.clean,
-					logReference,
-					language,
+				if (arFilter === '0' || (arFilter === '1' && !data.with_ar) || (arFilter === '2' && data.with_ar)) {
+					const work = {
+						lat: data.latitude.toString().substring(0, 8),
+						lon: data.longitude.toString().substring(0, 8),
+						message,
+						target: cares.id,
+						type: cares.type,
+						name: cares.name,
+						tth: data.tth,
+						clean: cares.clean,
+						logReference,
+						language,
+					}
+					jobs.push(work)
+				} else {
+					continue
 				}
-				jobs.push(work)
 			}
 
 			return jobs
