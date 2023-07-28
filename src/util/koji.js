@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { resolve } = require('path')
-const fetch = require('node-fetch')
+const fetch = require('node-fetch-native')
 const stripJsonComments = require('strip-json-comments')
 
 const { log } = require('../lib/logger')
