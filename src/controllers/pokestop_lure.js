@@ -86,6 +86,9 @@ class Lure extends Controller {
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
 			}
+			if (this.config.general.pmsfMapURL) {
+				data.pmsfMapUrl = `${this.config.general.pmsfMapURL}${!this.config.general.pmsfMapURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18&stopId=${data.pokestop_id}`
+			}
 			data.name = data.name ? this.escapeJsonString(data.name) : this.escapeJsonString(data.pokestop_name)
 			data.pokestopName = data.name
 			data.url = data.url || this.config.fallbacks?.pokestopUrl

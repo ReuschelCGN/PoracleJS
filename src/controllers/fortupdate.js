@@ -94,6 +94,9 @@ class FortUpdate extends Controller {
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
 			}
+			if (this.config.general.pmsfMapURL) {
+				data.pmsfMapUrl = `${this.config.general.pmsfMapURL}${!this.config.general.pmsfMapURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18&${data.fortType === 'pokestop' ? 'stop' : 'gym'}Id=${data.id}`
+			}
 			data.name = this.escapeJsonString(data.name)
 
 			const nestExpiration = data.reset_time + (7 * 24 * 60 * 60)
@@ -217,8 +220,6 @@ class FortUpdate extends Controller {
 
 				return []
 			}
-
-			data.shinyPossible = this.shinyPossible.isShinyPossible(data.pokemonId, data.formId)
 
 			data.stickerUrl = data.imgUrl
 
