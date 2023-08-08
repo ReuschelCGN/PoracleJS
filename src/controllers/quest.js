@@ -390,10 +390,7 @@ class Quest extends Controller {
 		if (item.quest_task && !this.config.general.ignoreMADQuestString) {
 			str = item.quest_task
 		} else {
-			if (item.title) {
-				item.quest_title = item.title
-			}
-			const questinfo = `quest_title_${item.title}`
+			const questinfo = `quest_title_${str.toLowerCase().item.title}`
 			const questTitle = this.GameData.translations[language].questTitles
 			if (item.title) {
 				try {
