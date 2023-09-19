@@ -99,6 +99,8 @@ class FortUpdate extends Controller {
 			}
 			data.name = this.escapeJsonString(data.name)
 
+			data.tth = moment.preciseDiff(Date.now(), nestExpiration * 1000, true)
+
 			data.applemap = data.appleMapUrl // deprecated
 			data.mapurl = data.googleMapUrl // deprecated
 			data.distime = data.disappearTime // deprecated
