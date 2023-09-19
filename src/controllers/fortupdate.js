@@ -99,11 +99,8 @@ class FortUpdate extends Controller {
 			}
 			data.name = this.escapeJsonString(data.name)
 
-			data.tth = moment.preciseDiff(Date.now(), nestExpiration * 1000, true)
-
 			data.applemap = data.appleMapUrl // deprecated
 			data.mapurl = data.googleMapUrl // deprecated
-			data.distime = data.disappearTime // deprecated
 
 			data.matchedAreas = this.pointInArea([data.latitude, data.longitude])
 			data.matched = data.matchedAreas.map((x) => x.name.toLowerCase())
@@ -255,10 +252,6 @@ class FortUpdate extends Controller {
 					...geoResult,
 					...data,
 					time: moment.tz(now, this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString()),
-					tthd: data.tth.days,
-					tthh: data.tth.hours,
-					tthm: data.tth.minutes,
-					tths: data.tth.seconds,
 					now,
 					nowISO: now.toISOString(),
 					areas: data.matchedAreas.filter((area) => area.displayInMatches).map((area) => area.name).join(', '),
