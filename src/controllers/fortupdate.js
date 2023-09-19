@@ -99,6 +99,7 @@ class FortUpdate extends Controller {
 			}
 			data.name = this.escapeJsonString(data.name)
 
+			const now = new Date()
 			data.tth = moment.tz(now, this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString())
 
 			data.applemap = data.appleMapUrl // deprecated
@@ -249,7 +250,6 @@ class FortUpdate extends Controller {
 				let [platform] = cares.type.split(':')
 				if (platform === 'webhook') platform = 'discord'
 
-				const now = new Date()
 				const view = {
 					...geoResult,
 					...data,
