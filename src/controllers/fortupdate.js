@@ -99,7 +99,7 @@ class FortUpdate extends Controller {
 			}
 			data.name = this.escapeJsonString(data.name)
 
-			const fortExpiration = data.reset_time + (7 * 24 * 60 * 60)
+			const fortExpiration = (7 * 24 * 60 * 60)
 			data.tth = moment.preciseDiff(Date.now(), fortExpiration * 1000, true)
 
 			data.applemap = data.appleMapUrl // deprecated
