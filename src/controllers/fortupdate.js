@@ -99,7 +99,7 @@ class FortUpdate extends Controller {
 			}
 			data.name = this.escapeJsonString(data.name)
 
-			const fortExpiration = (7 * 24 * 60 * 60)
+			const fortExpiration = moment.tz(Date.now(), this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString()) + (7 * 24 * 60 * 60)
 			data.tth = moment.preciseDiff(Date.now(), fortExpiration * 1000, true)
 
 			data.applemap = data.appleMapUrl // deprecated
