@@ -99,11 +99,16 @@ class FortUpdate extends Controller {
 			}
 			data.name = this.escapeJsonString(data.name)
 
-			const fortExpiration = Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60)
-			data.tth = moment.preciseDiff(Date.now(), fortExpiration * 1000, true)
+			const expiration = data.reset_time + (7 * 24 * 60 * 60)
+			data.tth = moment.preciseDiff(Date.now(), expiration * 1000, true)
+			data.disappearDate = moment(expiration * 1000).tz(geoTz.find(data.latitude, data.longitude)[0].toString()).format(this.config.locale.date)
+			data.resetDate = moment(data.reset_time * 1000).tz(geoTz.find(data.latitude, data.longitude)[0].toString()).format(this.config.locale.date)
+			data.disappearTime = moment(expiration * 1000).tz(geoTz.find(data.latitude, data.longitude)[0].toString()).format(this.config.locale.time)
+			data.resetTime = moment(data.reset_time * 1000).tz(geoTz.find(data.latitude, data.longitude)[0].toString()).format(this.config.locale.time)
 
 			data.applemap = data.appleMapUrl // deprecated
 			data.mapurl = data.googleMapUrl // deprecated
+			data.distime = data.disappearTime // deprecated
 
 			data.matchedAreas = this.pointInArea([data.latitude, data.longitude])
 			data.matched = data.matchedAreas.map((x) => x.name.toLowerCase())
@@ -251,15 +256,15 @@ class FortUpdate extends Controller {
 				if (platform === 'webhook') platform = 'discord'
 
 				const now = new Date()
+				const time = moment.tz(now, this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString())
 				const view = {
 					...geoResult,
 					...data,
-					time: moment.tz(now, this.config.locale.time, geoTz.find(data.latitude, data.longitude)[0].toString()),
 					tthd: data.tth.days,
 					tthh: data.tth.hours,
 					tthm: data.tth.minutes,
 					tths: data.tth.seconds,
-					now,
+					time: time.format(this.config.locale.time),
 					nowISO: now.toISOString(),
 					areas: data.matchedAreas.filter((area) => area.displayInMatches).map((area) => area.name).join(', '),
 				}
