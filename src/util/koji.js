@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { resolve } = require('path')
-const fetch = require('node-fetch')
+const fetch = require('node-fetch-native')
 const json5 = require('json5')
 
 const { log } = require('../lib/logger')
