@@ -39,7 +39,7 @@
     "config": "^3.3.9",
     "country-code-emoji": "^2.3.0",
     "deep-object-diff": "^1.1.9",
-    "discord.js": "^13.16.0",
+    "discord.js": "^14.14.1",
     "fast-json-stable-stringify": "^2.1.0",
     "fastify": "^4.23.0",
     "flat-cache": "^3.0.4",
