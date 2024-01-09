@@ -55,7 +55,7 @@
     "moment-timezone": "^0.5.43",
     "mysql2": "^3.3.3",
     "node-cache": "^5.1.2",
-    "node-config": "file:~/node-config-3.3.9.tgz",
+    "node-config": "file:~/usr/src/app/node-config-3.3.9.tgz",
     "node-fetch-native": "^1.2.0",
     "node-geocoder": "^4.2.0",
     "node-schedule": "^2.1.0",
