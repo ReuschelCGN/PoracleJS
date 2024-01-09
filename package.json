@@ -1,6 +1,6 @@
 {
   "name": "poracle",
-  "version": "4.7.1",
+  "version": "4.7.2",
   "description": "Webhook processing and personalised discord|telegram alarms",
   "keywords": [
     "poracle",
@@ -81,6 +81,6 @@
     "mocha": "^10.2.0"
   },
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.9.0"
   }
 }
