@@ -10,6 +10,7 @@ RUN apk add git \
         make \
         g++ \
     && npm install \
+    && npm install git://DeutscherDude/node-config.git \
     && apk del .gyp
 EXPOSE 3030
 CMD npm start
