@@ -1,7 +1,7 @@
 const stripJsonComments = require('strip-json-comments')
 const fs = require('fs')
 const path = require('path')
-const { Permissions } = require('discord.js')
+const { PermissionsBitField } = require('discord.js')
 const PoracleDiscordMessage = require('../../poracleDiscordMessage')
 const PoracleDiscordState = require('../../poracleDiscordState')
 
@@ -48,10 +48,10 @@ exports.run = async (client, msg, [args]) => {
 			return await msg.reply('No guild has been set, either execute inside a channel or specify guild<id>')
 		}
 
-		if (!guild.me.permissions.has(Permissions.FLAGS.MANAGE_WEBHOOKS)) {
+		if (!guild.me.permissions.has(PermissionsBitField.Flags.ManageWebhooks)) {
 			return await msg.reply('I have not been allowed to manage webhooks!')
 		}
-		if (!guild.me.permissions.has(Permissions.FLAGS.MANAGE_CHANNELS)) {
+		if (!guild.me.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
 			return await msg.reply('I have not been allowed to manage channels!')
 		}
 
