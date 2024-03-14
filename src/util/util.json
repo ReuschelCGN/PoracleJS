@@ -522,32 +522,32 @@
 		"501": {
 			"name": "Normal Lure",
 			"emoji": "lure-normal",
-			"color": "D000C0"
+			"color": "d000c0"
 		},
 		"502": {
 			"name": "Glacial Lure",
 			"emoji": "lure-glacial",
-			"color": "2973DD"
+			"color": "2973dd"
 		},
 		"503": {
 			"name": "Mossy Lure",
 			"emoji": "lure-mossy",
-			"color": "86A630"
+			"color": "86a630"
 		},
 		"504": {
 			"name": "Magnetic Lure",
 			"emoji": "lure-magnetic",
-			"color": "9FA6C1"
+			"color": "9fa6c1"
 		},
 		"505": {
 			"name": "Rainy Lure",
 			"emoji": "lure-rainy",
-			"color": "03D7FC"
+			"color": "03d7fc"
 		},
 		"506": {
 			"name": "Sparkly Lure",
 			"emoji": "lure-sparkly",
-			"color": "FFFF00"
+			"color": "ffff00"
 		}
 	},
 	"genders": {
@@ -615,64 +615,64 @@
 	"teams": {
 		"0": {
 			"name": "Uncontested",
-			"color": "BABABA",
+			"color": "bababa",
 			"emoji": "team-uncontested"
 		},
 		"1": {
 			"name": "Mystic",
-			"color": "3B4CCA",
+			"color": "3b4cca",
 			"emoji": "team-mystic"
 		},
 		"2": {
 			"name": "Valor",
-			"color": "CC0000",
+			"color": "cc0000",
 			"emoji": "team-valor"
 		},
 		"3": {
 			"name": "Instinct",
-			"color": "FFDE00",
+			"color": "ffde00",
 			"emoji": "team-instinct"
 		},
 		"4": {
 			"name": "Any team",
-			"color": "93C7B2"
+			"color": "93c7b2"
 		}
 	},
 	"types": {
 		"Grass": {
 			"id": 12,
 			"emoji": "type-grass",
-			"color": "78C850"
+			"color": "78c850"
 		},
 		"Poison": {
 			"id": 4,
 			"emoji": "type-poison",
-			"color": "A040A0"
+			"color": "a040a0"
 		},
 		"Fire": {
 			"id": 10,
 			"emoji": "type-fire",
-			"color": "F08030"
+			"color": "f08030"
 		},
 		"Flying": {
 			"id": 3,
 			"emoji": "type-flying",
-			"color": "A890F0"
+			"color": "a890f0"
 		},
 		"Water": {
 			"id": 11,
 			"emoji": "type-water",
-			"color": "6890F0"
+			"color": "6890f0"
 		},
 		"Bug": {
 			"id": 7,
 			"emoji": "type-bug",
-			"color": "A8B820"
+			"color": "a8b820"
 		},
 		"Normal": {
 			"id": 1,
 			"emoji": "type-normal",
-			"color": "A8A878"
+			"color": "a8a878"
 		},
 		"Dark": {
 			"id": 17,
@@ -682,42 +682,42 @@
 		"Electric": {
 			"id": 13,
 			"emoji": "type-electric",
-			"color": "F8D030"
+			"color": "f8d030"
 		},
 		"Rock": {
 			"id": 6,
 			"emoji": "type-rock",
-			"color": "B8A038"
+			"color": "b8a038"
 		},
 		"Ground": {
 			"id": 5,
 			"emoji": "type-ground",
-			"color": "E0C068"
+			"color": "e0c068"
 		},
 		"Fairy": {
 			"id": 18,
 			"emoji": "type-fairy",
-			"color": "EE99AC"
+			"color": "ee99ac"
 		},
 		"Fighting": {
 			"id": 2,
 			"emoji": "type-fighting",
-			"color": "C03028"
+			"color": "c03028"
 		},
 		"Psychic": {
 			"id": 14,
 			"emoji": "type-psychic",
-			"color": "F85888"
+			"color": "f85888"
 		},
 		"Steel": {
 			"id": 9,
 			"emoji": "type-steel",
-			"color": "B8B8D0"
+			"color": "b8b8d0"
 		},
 		"Ice": {
 			"id": 15,
 			"emoji": "type-ice",
-			"color": "98D8D8"
+			"color": "98d8d8"
 		},
 		"Ghost": {
 			"id": 8,
@@ -727,7 +727,7 @@
 		"Dragon": {
 			"id": 16,
 			"emoji": "type-dragon",
-			"color": "7038F8"
+			"color": "7038f8"
 		}
 	},
 	"weather": {
@@ -939,17 +939,17 @@
 	"pokestopEvent": {
 		"7": {
 			"name": "Gold-Stop",
-			"color": "F9E418",
+			"color": "f9e418",
 			"emoji": "incident-goldstop"
 		},
 		"8": {
 			"name": "Kecleon",
-			"color": "B3CA78",
+			"color": "b3ca78",
 			"emoji": "incident-kecleon"
 		},
 		"9": {
 			"name": "Showcase",
-			"color": "03AEB6",
+			"color": "03aeb6",
 			"emoji": "incident-showcase"
 		}
 	}
