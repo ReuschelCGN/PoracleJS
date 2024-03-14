@@ -1,4 +1,4 @@
-const { Permissions } = require('discord.js')
+const { PermissionsBitField } = require('discord.js')
 
 exports.run = async (client, msg, [args]) => {
 	try {
@@ -13,7 +13,7 @@ exports.run = async (client, msg, [args]) => {
 			return await msg.reply('This needs to be run from within a channel on the appropriate guild')
 		}
 
-		if (!msg.guild.me.permissions.has(Permissions.FLAGS.MANAGE_WEBHOOKS)) {
+		if (!msg.guild.me.permissions.has(PermissionsBitField.Flags.ManageWebhooks)) {
 			return await msg.reply('I have not been allowed to make webhooks!')
 		}
 
