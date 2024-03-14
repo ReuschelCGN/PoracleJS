@@ -1,6 +1,6 @@
 const {
 	Client, DiscordAPIError,
-	Intents,
+	IntentsBitField,
 	Options,
 } = require('discord.js')
 const fsp = require('fs').promises
@@ -79,11 +79,11 @@ class Worker {
 	async bounceWorker() {
 		delete this.client
 
-		const intents = new Intents()
-		intents.add(Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILD_PRESENCES)
+		const intents = new IntentsBitField()
+		intents.add(IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.GuildPresences)
 
 		this.client = new Client({
-			intents,
+			intents: intents,
 			partials: ['CHANNEL', 'MESSAGE'], // , 'GUILD_MEMBER'],
 			makeCache: Options.cacheWithLimits({
 				MessageManager: 1,
