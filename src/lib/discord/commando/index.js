@@ -2,7 +2,7 @@ const {
 	Client,
 	IntentsBitField,
 	Partials,
-	Options,
+	Options
 } = require('discord.js')
 const { EventEmitter } = require('events')
 const fs = require('fs')
