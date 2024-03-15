@@ -1,7 +1,8 @@
 const {
 	Client, DiscordAPIError,
 	IntentsBitField,
-	Options,
+	Partials,
+	Options
 } = require('discord.js')
 const fsp = require('fs').promises
 const NodeCache = require('node-cache')
