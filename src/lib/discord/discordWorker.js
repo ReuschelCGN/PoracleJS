@@ -85,7 +85,7 @@ class Worker {
 
 		this.client = new Client({
 			intents,
-			partials: ['Channel', 'Message'], // , 'GuildMember'],
+			partials: ['Partials.Channel', 'Partials.Message'], // , 'Partials.GuildMember'],
 			makeCache: Options.cacheWithLimits({
 				MessageManager: 1,
 				PresenceManager: 0,
