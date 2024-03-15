@@ -43,7 +43,7 @@ class DiscordCommando extends EventEmitter {
 		intents.add(IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages, IntentsBitField.Flags.GuildMembers, IntentsBitField.Flags.DirectMessages, IntentsBitField.Flags.GuildPresences)
 
 		this.client = new Client({
-			intents: intents,
+			intents,
 			partials: ['CHANNEL', 'MESSAGE'], // , 'GUILD_MEMBER'],
 			makeCache: Options.cacheWithLimits({
 				MessageManager: 1,
