@@ -45,7 +45,7 @@ class DiscordCommando extends EventEmitter {
 
 		this.client = new Client({
 			intents,
-			partials: ['Partials.Channel', 'Partials.Message'], // , 'Partials.GuildMember'],
+			partials: [ Partials.Channel, Partials.Message], // , Partials.GuildMember],
 			makeCache: Options.cacheWithLimits({
 				MessageManager: 1,
 				PresenceManager: 0,
