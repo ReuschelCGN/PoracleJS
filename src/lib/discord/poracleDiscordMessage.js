@@ -102,7 +102,7 @@ class PoracleDiscordMessage {
 	}
 
 	async replyWithAttachment(message, attachment) {
-		if (this.msg.channel.type === 'GUILD_TEXT' || this.msg.channel.type === 'GUILD_NEWS') {
+		if (this.msg.channel.type === 'GuildText' || this.msg.channel.type === 'GuildNews') {
 			// This is a channel, do not reply but rather send to avoid @ reply
 			return this.msg.channel.send({ content: message, files: [attachment] })
 		}
