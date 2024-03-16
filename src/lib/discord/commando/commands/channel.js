@@ -40,14 +40,14 @@ exports.run = async (client, msg, [args]) => {
 			language = newLanguage
 		}
 
-		if ((msg.channel.type === 'GUILD_TEXT' || msg.channel.type === 'GUILD_NEWS') && !target.webhook) target = { id: msg.channel.id, name: msg.channel.name, webhook: false }
+		if ((msg.channel.type === 'GuildText' || msg.channel.type === 'GuildNews') && !target.webhook) target = { id: msg.channel.id, name: msg.channel.name, webhook: false }
 
 		if (args.find((arg) => arg === 'add')) {
 			if (webhookName && !webhookLink || !webhookName && webhookLink) return await msg.reply('To add webhooks, provide both a name using the `name` parameter and an url')
 
 			if (webhookName && webhookLink) target = { id: webhookLink, name: webhookName, webhook: true }
 
-			if (!target.webhook && (msg.channel.type !== 'GUILD_TEXT' && msg.channel.type !== 'GUILD_NEWS')) {
+			if (!target.webhook && (msg.channel.type !== 'GuildText' && msg.channel.type !== 'GuildNews')) {
 				return msg.reply('Adding a bot controlled channel cannot be done from DM. To add webhooks, provide both a name using the `name` parameter and an url')
 			}
 
