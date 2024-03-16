@@ -9,7 +9,7 @@ exports.run = async (client, msg, [args]) => {
 			return await msg.author.send(client.translator.translate('Please run commands in Direct Messages'))
 		}
 
-		if (msg.channel.type !== 'GUILD_TEXT' && msg.channel.type !== 'GUILD_NEWS') {
+		if (msg.channel.type !== 'GuildText' && msg.channel.type !== 'GuildNews') {
 			return await msg.reply('This needs to be run from within a channel on the appropriate guild')
 		}
 
