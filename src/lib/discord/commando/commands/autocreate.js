@@ -85,7 +85,7 @@ exports.run = async (client, msg, [args]) => {
 		let categoryId
 		if (template.definition.category) {
 			const categoryOptions = {
-				type: 'GUILD_CATEGORY',
+				type: 'GuildCategory',
 			}
 
 			const categoryName = format(template.definition.category.categoryName, args)
