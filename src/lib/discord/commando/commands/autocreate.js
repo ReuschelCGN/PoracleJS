@@ -279,9 +279,9 @@ exports.run = async (client, msg, [args]) => {
 		for (const channelDefinition of template.definition.channels) {
 			const channelOptions = {}
 			if (channelDefinition.channelType === 'text') {
-				channelOptions.type = 'GUILD_TEXT'
+				channelOptions.type = 'GuildText'
 			} else if (channelDefinition.channelType === 'voice') {
-				channelOptions.type = 'GUILD_VOICE'
+				channelOptions.type = 'GuildVoice'
 			}
 			if (categoryId) {
 				channelOptions.parent = categoryId
