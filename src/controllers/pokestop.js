@@ -324,7 +324,7 @@ class Invasion extends Controller {
 							}
 							// Lineup 100% of encounter
 							let gruntLineupformNormalised = ''
-							const gruntLineupList = { chance: 100, monsters: [] }
+							const gruntLineupList = { confirmed: true, monsters: [] }
 							if (data.lineup && data.lineup != 'null') {
 								data.lineup.forEach((lr) => {
 									const lineup = +lr.pokemon_id
