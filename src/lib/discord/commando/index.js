@@ -138,7 +138,7 @@ class DiscordCommando extends EventEmitter {
 
 			await this.client.login(this.token)
 		} catch (err) {
-			if (err.code === 'DISALLOWED_INTENTS') {
+			if (err.code === 'DisallowedIntents') {
 				this.logs.log.error('Could not initialise discord', err)
 				this.logs.log.error('Ensure that your discord bot Gateway intents for Presence, Server Members and Messages are on - see https://muckelba.github.io/poracleWiki/discordbot.html')
 				process.exit(1)
