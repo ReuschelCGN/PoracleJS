@@ -98,7 +98,7 @@ class Worker {
 			await this.client.user.setStatus(this.status)
 			if (this.activity) await this.client.user.setActivity(this.activity)
 		} catch (err) {
-			if (err.code === 'DISALLOWED_INTENTS') {
+			if (err.code === 'DisallowedIntents') {
 				this.logs.log.error('Could not initialise discord', err)
 				this.logs.log.error('Ensure that your discord bot Gateway intents for Presence, Server Members and Messages are on - see https://muckelba.github.io/poracleWiki/discordbot.html')
 				process.exit(1)
