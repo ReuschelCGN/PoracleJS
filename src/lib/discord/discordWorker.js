@@ -45,22 +45,22 @@ class Worker {
 	}
 
 	async setListeners() {
-		this.client.on('error', (err) => {
+		this.client.rest.on('error', (err) => {
 			this.busy = true
 			this.logs.discord.error(`Discord worker #${this.id} \n bouncing`, err)
 			this.bounceWorker()
 		})
-		this.client.on('warn', (err) => {
+		this.client.rest.on('warn', (err) => {
 			this.logs.discord.error(`Discord worker #${this.id} \n bouncing`, err)
 		})
-		this.client.on('ready', () => {
+		this.client.rest.on('ready', () => {
 			this.logs.log.info(`discord worker #${this.id} ${this.client.user.tag} ready for action`)
 			if (this.rehydrateTimeouts) {
 				this.loadTimeouts()
 			}
 			this.busy = false
 		})
-		this.client.on('rateLimit', (info) => {
+		this.client.rest.on('rateLimit', (info) => {
 			const tag = (this.client && this.client.user) ? this.client.user.tag : ''
 			let channelId
 			if (info.route) {
