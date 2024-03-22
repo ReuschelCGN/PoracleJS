@@ -53,13 +53,13 @@ class DiscordCommando extends EventEmitter {
 		})
 
 		try {
-			this.client.on('error', (err) => {
+			this.client.rest.on('error', (err) => {
 				this.busy = true
 				this.logs.log.error(`Discord worker #${this.id} \n bouncing`, err)
 				this.bounceWorker()
 			})
 
-			this.client.on('rateLimit', (info) => {
+			this.client.rest.on('rateLimit', (info) => {
 				let channelId
 				if (info.route) {
 					const channelMatch = info.route.match(/\/channels\/(\d+)\//)
@@ -73,7 +73,7 @@ class DiscordCommando extends EventEmitter {
 				}
 				this.logs.log.warn(`#${this.id} Discord commando worker - 429 rate limit hit - in timeout ${info.timeout ? info.timeout : 'Unknown timeout '} route ${info.route}${channelId ? ` (probably ${channelId})` : ''}`)
 			})
-			this.client.on('ready', () => {
+			this.client.rest.on('ready', () => {
 				this.logs.log.info(`#${this.id} Discord commando - ${this.client.user.tag} ready for action`)
 
 				this.busy = false
@@ -97,16 +97,16 @@ class DiscordCommando extends EventEmitter {
 			this.client.updatedDiff = diff
 			this.client.translator = this.translator
 			this.client.hookRegex = /(?:https?:\/\/|www\.)(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#/%=~_|$])/igm
-			this.client.on('poracleAddMessageQueue', (queue) => this.emit('sendMessages', queue))
-			this.client.on('poracleAddWebhookQueue', (queue) => this.emit('addWebhook', queue))
-			this.client.on('poracleReloadAlerts', () => this.emit('refreshAlertCache'))
+			this.client.rest.on('poracleAddMessageQueue', (queue) => this.emit('sendMessages', queue))
+			this.client.rest.on('poracleAddWebhookQueue', (queue) => this.emit('addWebhook', queue))
+			this.client.rest.on('poracleReloadAlerts', () => this.emit('refreshAlertCache'))
 
 			fs.readdir(`${__dirname}/events/`, (err, files) => {
 				if (err) return this.log.error(err)
 				files.forEach((file) => {
 					const event = require(`${__dirname}/events/${file}`) // eslint-disable-line global-require
 					const eventName = file.split('.')[0]
-					this.client.on(eventName, event.bind(null, this.client))
+					this.client.rest.on(eventName, event.bind(null, this.client))
 				})
 			})
 
