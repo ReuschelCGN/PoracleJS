@@ -9,7 +9,7 @@ module.exports = async (idArray, config, log) => {
 	const client = new Client()
 	const result = { humans: [], channels: [] }
 	let ready = false
-	client.on('ready', async () => {
+	client.rest.on('ready', async () => {
 		log.info('im ready')
 		for (const id of idArray) {
 			let human = null
@@ -33,7 +33,7 @@ module.exports = async (idArray, config, log) => {
 		}
 		ready = true
 	})
-	client.on('error', (err) => {
+	client.rest.on('error', (err) => {
 		log.error(`Discord bot ${config.discord.token[0].substring(1, 6)}... errored:`, err)
 		process.exit(1)
 	})
