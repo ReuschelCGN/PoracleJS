@@ -191,7 +191,7 @@ exports.run = async (client, msg, args, options) => {
 
 			if (commandEverything) {
 				const everythingResult = await client.query.deleteQuery('nests', { id: target.id, profile_no: currentProfileNo })
-				client.log.info(`${logReference}: ${target.name} stopped tracking all raids`)
+				client.log.info(`${logReference}: ${target.name} stopped tracking all nests`)
 				result += everythingResult
 			}
 			msg.reply(
