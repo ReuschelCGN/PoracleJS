@@ -526,6 +526,7 @@
   //
   "tuning": {
     "fastMonsters": false,
+    "disablePokemonCache": false,
     "maxDatabaseConnections": 15,
     "webhookProcessingWorkers": 5,
     "concurrentWebhookProcessorsPerWorker": 4,
