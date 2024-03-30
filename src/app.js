@@ -631,7 +631,7 @@ async function processOne(hook) {
 					}
 				}
 
-				if (incidentExpiration && !config.general.disableInvasion && (!config.general.disableNotConfirmedInvasion || incidentDisplayType < '7')) {
+				if (incidentExpiration && !config.general.disableInvasion && (!config.general.disableNotConfirmedInvasion || incidentDisplayType > '6')) {
 					const cacheKey = `${hook.message.pokestop_id}I${incidentExpiration}`
 
 					if (fastify.cache.get(cacheKey) && !hook.message.poracleTest) {
