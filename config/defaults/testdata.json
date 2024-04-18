@@ -172,6 +172,12 @@
     "webhook": {"pokestop_name": "Playground Buchforst 2.0","grunt_type": 0,"url": "http://lh3.googleusercontent.com/w6gTZvocAujGU1iDccte_76VFYrRVqfhPxJKDB2yDftlc7HOxwYXKxU1_-Y27TKKEGenQjWxduaFHGHOub_KSHEW1fY","start": 1688886000,"longitude": 6.994553,"pokestop_id": "0c1c942502d34767a030c25ecc3a93be.16","expiration": 1689184800,"character": 0,"style": 0,"display_type": 9,"latitude": 50.951794,"updated": 1689008020,"enabled": true,"id": "6287513096386229372","incident_expire_timestamp": 1689184800}
   },
   {
+    "type": "pokestop",
+    "test": "showcase",
+    "location": "current",
+    "webhook": {"pokestop_name": "Playground Buchforst 2.0","grunt_type": 0,"url": "http://lh3.googleusercontent.com/w6gTZvocAujGU1iDccte_76VFYrRVqfhPxJKDB2yDftlc7HOxwYXKxU1_-Y27TKKEGenQjWxduaFHGHOub_KSHEW1fY","start": 1688886000,"longitude": 6.994553,"pokestop_id": "0c1c942502d34767a030c25ecc3a93be.16","expiration": 1689184800,"character": 0,"style": 0,"display_type": 9,"latitude": 50.951794,"updated": 1689008020,"enabled": true,"id": "6287513096386229372","incident_expire_timestamp": 1689184800}
+  },
+  {
     "type": "fort_update",
     "test": "edit",
     "location": "current",
