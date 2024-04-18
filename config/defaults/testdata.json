@@ -104,21 +104,25 @@
   {
     "type": "quest",
     "test": "stardust",
+    "location": "current",
     "webhook": {"pokestop_id":"7d2bd3f5e4564b74a4426fb5521cf758.11","template":"CHALLENGE_BASE_SPIN_S_ITEM","pokestop_name":"Canterbury Bus Station","pokestop_url":"http://lh3.googleusercontent.com/hCU2iQ2B2UrFAeUxNlg0IMA5X0cy1ntn-ly_IKwCjDeDP-MZeS2TWZU695UM7f0vG7MhqREQ8QitO1csxfgy17RpGU4","conditions":[],"type":5,"latitude":51.276593,"longitude":1.082505,"rewards":[{"info":{"amount":500},"type":3}],"target":3,"updated":1643522373,"quest_task":"Spin 3 PokéStops or Gyms","with_ar":true}
   },
   {
     "type": "quest",
     "test": "pokemon",
+    "location": "current",
     "webhook": {"pokestop_id":"45ad8b858e31453fa5a8da2fa124c11a.16","template":"JAN_2022_BUDDY_HEARTS","pokestop_name":"Whitefriars Water Clock","pokestop_url":"http://lh3.googleusercontent.com/YiixrmDfSjYoH_OAfdN3UCmPfDpYLPWowz_zTk-eDELJBCWhGwrscjLHpfV_yt53z7zo_7NtKqkGSHnTWrkK3tjCEdA","conditions":[],"type":34,"latitude":51.277028,"longitude":1.081485,"rewards":[{"info":{"pokemon_id":133,"form_id":0,"costume_id":0,"shiny":0},"type":7}],"target":5,"updated":1643522366,"quest_task":"Earn 5 hearts with your Buddy","with_ar":true}
   },
   {
     "type": "quest",
     "test": "item",
+    "location": "current",
     "webhook": {"pokestop_id":"696a5d061f824c01b01b853af6a1ad95.16","template":"QUEST_TGR_JAN22_CATCH","pokestop_name":"Eye On The Wall","pokestop_url":"http://lh3.googleusercontent.com/WWDrs4ADaghmU-OFAKAY8lbgJIq5LiDDtPMRSh6_QTIbIWIg69UD1LoLEnH7LYcTyaNEBP38yTVJnE73C6bGS2_8gzhN","conditions":[],"type":4,"latitude":51.276413,"longitude":1.082237,"rewards":[{"info":{"item_id":103,"amount":2},"type":2}],"target":5,"updated":1643522344,"quest_task":"Catch 5 Pokémon","with_ar":true}
   },
   {
     "type": "pokestop",
     "test": "invasion",
+    "location": "current",
     "webhook": {"name":"Site Of Doges Chantry","pokestop_id":"e3c2628308cf468fb802ff72b326232c.16","latitude":51.276225,"longitude":1.087866,"updated":1643529456,"last_modified":1643529455,"url":"http://lh3.googleusercontent.com/esDyMLRH7TGp6lgw2VLNk8tBRzx5nJ3_9JRiPgZA1spY_FKMpDI-1lBwfrN4enCy8JF4QTlVRwIlpQMqxIq9Z63n_Q","incident_start":1643529452,"incident_expiration":1643531252,"incident_grunt_type":49}
   },
   {
@@ -159,7 +163,13 @@
   {
     "type": "pokestop",
     "test": "goldlure",
-    "webhook": {"name":"Memorial Sculpture & Verse","pokestop_id":"0d4b26adbf24446ba893f0aa3f8de337.16","latitude":51.284727,"longitude":1.060694,"updated":1643554276,"last_modified":1643553312,"lure_expiration":1643555112,"lure_id":506,"url":"http://lh3.googleusercontent.com/Ce-yPhm1FwGNbFzaM0ToMESZ57EWx1g8dKXXgEE4o-mmdP0XdsHk2nSEXOBk88H5PIXBHud-b7m6PUUJ3N8Pe_XB98NY"}
+    "webhook": {"name":"Mediapark bis zum Kloster","pokestop_id":"2cb6f0ce5f0f46cc89e1190d644c376f.16","latitude":50.94797,"longitude":6.94094,"updated":1643554276,"last_modified":1643553312,"lure_expiration":1643555112,"lure_id":506,"url":"http://lh3.googleusercontent.com/pxof2kpKJWhzLwD1gKbIZmdVCdjK8RT4ufsONckHWaxK1YJF2aMm1pp4on23v9f1yfFs_jXaCMYY7fEojy1QLG0kE1Y"}
+  },
+  {
+    "type": "pokestop",
+    "test": "showcase",
+    "location": "current",
+    "webhook": {"pokestop_name": "Playground Buchforst 2.0","grunt_type": 0,"url": "http://lh3.googleusercontent.com/w6gTZvocAujGU1iDccte_76VFYrRVqfhPxJKDB2yDftlc7HOxwYXKxU1_-Y27TKKEGenQjWxduaFHGHOub_KSHEW1fY","start": 1688886000,"longitude": 6.994553,"pokestop_id": "0c1c942502d34767a030c25ecc3a93be.16","expiration": 1689184800,"character": 0,"style": 0,"display_type": 9,"latitude": 50.951794,"updated": 1689008020,"enabled": true,"id": "6287513096386229372","incident_expire_timestamp": 1689184800}
   },
   {
     "type": "pokestop",
