@@ -25,7 +25,7 @@ class PogoEventParser {
 			// Timeout Logic
 		}, timeoutMs)
 
-		const url = 'https://raw.githubusercontent.com/ccev/pogoinfo/v2/active/events.json'
+		const url = 'https://raw.githubusercontent.com/hamster007Github/pogoeventdata/main/data/event.json'
 		const result = await axios({
 			method: 'get',
 			url,
