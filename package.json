@@ -1,6 +1,6 @@
 {
   "name": "poracle",
-  "version": "4.8.3",
+  "version": "4.8.4",
   "description": "Webhook processing and personalised discord|telegram alarms",
   "keywords": [
     "poracle",
@@ -24,7 +24,6 @@
     "generate": "node src/util/generateData.js",
     "koji": "node src/util/koji.js",
     "init": "node src/init/initConfig.js",
-    "latest": "npm run generate latest && npm run koji && node .",
     "lint": "./node_modules/.bin/eslint ./src --fix",
     "migrateV3": "node src/init/migrateV3.js",
     "prepare": "husky",
