@@ -37,9 +37,10 @@ const update = async function update() {
 	if (process.argv[2] === 'latest') {
 		try {
 			log.info('Fetching latest invasions...')
+			const gruntFile = await fetch('https://raw.githubusercontent.com/WatWowMap/event-info/main/grunts/formatted.json')
 			fs.writeFileSync(
 				'./src/util/grunts.json',
-				await fetch('https://raw.githubusercontent.com/WatWowMap/event-info/main/grunts/formatted.json'),
+				JSON.stringify(gruntFile, null, 2),
 				'utf8',
 			)
 			log.info('Latest grunts saved...')
