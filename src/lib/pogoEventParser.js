@@ -3,8 +3,8 @@ const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
 
 /**
- * Class for handling Malte's Event list
- * see https://github.com/ccev/pogoinfo/tree/v2/active
+ * Class for handling ScrapedDuck's event data branch
+ * see https://github.com/bigfoott/ScrapedDuck/tree/data
  */
 class PogoEventParser {
 	constructor(log) {
