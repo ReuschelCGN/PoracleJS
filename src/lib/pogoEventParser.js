@@ -3,8 +3,8 @@ const geoTz = require('geo-tz')
 const moment = require('moment-timezone')
 
 /**
- * Class for handling Malte's Event list
- * see https://github.com/ccev/pogoinfo/tree/v2/active
+ * Class for handling ScrapedDuck's event data branch
+ * see https://github.com/bigfoott/ScrapedDuck/tree/data
  */
 class PogoEventParser {
 	constructor(log) {
@@ -48,7 +48,7 @@ class PogoEventParser {
 			// create filtered pokemon spawn event list
 			// for now, only filter by eventType until spawn information is available
 			let filteredEvents = []
-			for (const event of events.filter((x) => x.eventType === 'community-day' || x.eventType === 'pokemon-spotlight-hour')) {
+			for (const event of events.filter((x) => x.eventType === 'community-day' || x.eventType === 'pokemon-spotlight-hour' || x.extraData.generic.hasSpawns)) {
 				filteredEvents.push(event)
 			}
 			this.spawnEvents = filteredEvents
@@ -56,7 +56,7 @@ class PogoEventParser {
 			// create filtered quest event list
 			// for now, only filter by eventType until field research task information is available
 			filteredEvents = []
-			for (const event of events.filter((x) => x.eventType === 'community-day')) {
+			for (const event of events.filter((x) => x.eventType === 'community-day' || x.extraData.generic.hasFieldResearchTasks)) {
 				filteredEvents.push(event)
 			}
 			this.questEvents = filteredEvents

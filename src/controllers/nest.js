@@ -87,6 +87,9 @@ class Nest extends Controller {
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
 			}
+			if (this.config.general.pmsfMapURL) {
+				data.pmsfMapUrl = `${this.config.general.pmsfMapURL}${!this.config.general.pmsfMapURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18`
+			}
 			data.name = this.escapeJsonString(data.name)
 
 			const nestExpiration = data.reset_time + (7 * 24 * 60 * 60)
