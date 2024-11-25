@@ -23,7 +23,7 @@ class ShinyPossible {
 			// Timeout Logic
 		}, timeoutMs)
 
-		const url = 'https://raw.githubusercontent.com/jms412/PkmnShinyMap/main/shinyPossible.json'
+		const url = 'https://raw.githubusercontent.com/ReuschelCGN/PkmnShinyMap/main/shinyPossible.json'
 		const result = await axios({
 			method: 'get',
 			url,
