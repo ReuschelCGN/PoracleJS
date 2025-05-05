@@ -23,7 +23,7 @@ exports.run = async (client, msg, args, options) => {
 		let template = client.config.general.defaultTemplateName?.toString() ?? '1'
 		let language = client.config.general.locale
 
-		const validHooks = ['pokemon', 'raid', 'pokestop', 'gym', 'nest', 'quest', 'fort-update']
+		const validHooks = ['pokemon', 'raid', 'pokestop', 'gym', 'nest', 'quest', 'fort-update', 'maxbattle']
 
 		const hookTypeDisplay = args[0]
 		if (!validHooks.includes(hookTypeDisplay)) {
@@ -137,6 +137,11 @@ exports.run = async (client, msg, args, options) => {
 				break
 			}
 			case 'gym': {
+				break
+			}
+			case 'max_battle': {
+				hook.start_time = Date.now() / 1000 - 10 * 60
+				hook.end_time = hook.start_time + 1440 * 60
 				break
 			}
 			default:
