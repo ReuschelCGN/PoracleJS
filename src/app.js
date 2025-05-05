@@ -760,6 +760,28 @@ async function processOne(hook) {
 				break
 			}
 
+			case 'max_battle': {
+				if (config.general.disableMaxBattle) {
+					fastify.controllerLog.debug(`${hook.message.station_id}: MaxBattle was received but set to be ignored in config`)
+
+					break
+				}
+				if (!hook.message.poracleTest) {
+					fastify.webhooks.info(`max_battle ${JSON.stringify(hook.message)}`)
+					const cacheKey = `${hook.message.station_id}${hook.message.end_time}${hook.message.battle_pokemon_id}`
+
+					if (fastify.cache.get(cacheKey)) {
+						fastify.controllerLog.debug(`${hook.message.station_id}: MaxBattle was sent again too soon, ignoring`)
+						break
+					}
+
+					fastify.cache.set(cacheKey, 'x')
+				}
+
+				await processHook(hook)
+				break
+			}
+
 			case 'weather': {
 				if (config.general.disableWeather) break
 				fastify.webhooks.info(`weather ${JSON.stringify(hook.message)}`)
