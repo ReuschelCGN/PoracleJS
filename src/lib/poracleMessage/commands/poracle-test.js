@@ -23,7 +23,7 @@ exports.run = async (client, msg, args, options) => {
 		let template = client.config.general.defaultTemplateName?.toString() ?? '1'
 		let language = client.config.general.locale
 
-		const validHooks = ['pokemon', 'raid', 'pokestop', 'gym', 'nest', 'quest', 'fort-update', 'maxbattle']
+		const validHooks = ['pokemon', 'raid', 'pokestop', 'gym', 'nest', 'quest', 'fort-update', 'max-battle']
 
 		const hookTypeDisplay = args[0]
 		if (!validHooks.includes(hookTypeDisplay)) {
