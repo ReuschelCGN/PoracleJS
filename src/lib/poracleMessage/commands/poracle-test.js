@@ -140,8 +140,10 @@ exports.run = async (client, msg, args, options) => {
 				break
 			}
 			case 'max_battle': {
-				hook.start_time = Date.now() / 1000 - 10 * 60
-				hook.end_time = hook.start_time + 1440 * 60
+				hook.battle_start = Date.now() / 1000 + 10 * 60
+				hook.start_time = hook.battle_start
+				hook.battle_end = hook.battle_start + 30 * 60
+				hook.end_time = hook.battle_end
 				break
 			}
 			default:
