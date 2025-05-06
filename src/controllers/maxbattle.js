@@ -79,7 +79,7 @@ class Maxbattle extends Controller {
 			data.stationId = data.station_id
 			data.pokemonId = data.battle_pokemon_id
 			data.move_1 = data.battle_pokemon_move_1,
-			data.move_1 = data.battle_pokemon_move_2
+			data.move_2 = data.battle_pokemon_move_2
 			data.level = data.battle_level
 			data.gmax = (data.level > 5) ? 1 : 0
 			data.gender = data.battle_pokemon_gender
