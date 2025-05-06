@@ -82,6 +82,7 @@ class Maxbattle extends Controller {
 			data.gmax = (data.battle_level > 5) ? 1 : 0
 			data.evolution = 0
 			data.gender = 0
+			data.bread = 1
 			data.color = 'D000C0'
 
 			Object.assign(data, this.config.general.dtsDictionary)
@@ -144,8 +145,6 @@ class Maxbattle extends Controller {
 				data.generationNameEng = this.GameData.utilData.genData[data.generation]?.name
 				data.generationRoman = this.GameData.utilData.genData[data.generation]?.roman
 
-				data.bread = 1
-				data.gmax = (data.battle_level > 5) ? 1 : 0
 				if (data.tth.firstDateWasLater || ((data.tth.hours * 3600) + (data.tth.minutes * 60) + data.tth.seconds) < minTth) {
 					this.log.debug(`${this.logReference}: MaxBattle on ${data.stationName} already disappeared or is about to expire in: ${data.tth.hours}:${data.tth.minutes}:${data.tth.seconds}`)
 					return []
