@@ -82,6 +82,7 @@ class Maxbattle extends Controller {
 			data.gmax = (data.battle_level > 5) ? 1 : 0
 			data.evolution = 0
 			data.gender = 0
+			data.color = 'D000C0'
 
 			Object.assign(data, this.config.general.dtsDictionary)
 			data.googleMapUrl = `https://maps.google.com/maps?q=${data.latitude},${data.longitude}`
