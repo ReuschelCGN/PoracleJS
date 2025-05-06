@@ -179,9 +179,9 @@ class Maxbattle extends Controller {
 
 				setImmediate(async () => {
 					try {
-						if (this.imgUicons) data.imgUrl = await this.imgUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
-						if (this.imgUiconsAlt) data.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
-						if (this.stickerUicons) data.stickerUrl = await this.stickerUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages)
+						if (this.imgUicons) data.imgUrl = await this.imgUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, 1, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
+						if (this.imgUiconsAlt) data.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, 1, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
+						if (this.stickerUicons) data.stickerUrl = await this.stickerUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, 1, data.shinyPossible && this.config.general.requestShinyImages)
 
 						const geoResult = await this.getAddress({
 							lat: data.latitude,
