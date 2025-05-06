@@ -144,6 +144,7 @@ class Maxbattle extends Controller {
 				data.generationNameEng = this.GameData.utilData.genData[data.generation]?.name
 				data.generationRoman = this.GameData.utilData.genData[data.generation]?.roman
 
+				data.bread = 1
 				data.gmax = (data.battle_level > 5) ? 1 : 0
 				if (data.tth.firstDateWasLater || ((data.tth.hours * 3600) + (data.tth.minutes * 60) + data.tth.seconds) < minTth) {
 					this.log.debug(`${this.logReference}: MaxBattle on ${data.stationName} already disappeared or is about to expire in: ${data.tth.hours}:${data.tth.minutes}:${data.tth.seconds}`)
@@ -179,9 +180,9 @@ class Maxbattle extends Controller {
 
 				setImmediate(async () => {
 					try {
-						if (this.imgUicons) data.imgUrl = await this.imgUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlGym
-						if (this.imgUiconsAlt) data.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlGym
-						if (this.stickerUicons) data.stickerUrl = await this.stickerUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.shinyPossible && this.config.general.requestShinyImages)
+						if (this.imgUicons) data.imgUrl = await this.imgUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlGym
+						if (this.imgUiconsAlt) data.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlGym
+						if (this.stickerUicons) data.stickerUrl = await this.stickerUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages)
 
 						const geoResult = await this.getAddress({
 							lat: data.latitude,
