@@ -23,7 +23,7 @@ class Maxbattle extends Controller {
 		(maxbattle.move = 9000 or maxbattle.move = ${data.battle_pokemon_move_1} or maxbattle.move = ${data.battle_pokemon_move_2})
 		${strictareastring}
 		and
-		((maxbattle.station_id='${data.station_id}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificgym%') ) or (maxbattle.station_id is NULL and `
+		((maxbattle.station_id='${data.station_id}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
 
 		if (['pg', 'mysql'].includes(this.config.database.client)) {
 			query = query.concat(`
