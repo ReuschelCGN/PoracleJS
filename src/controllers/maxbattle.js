@@ -8,19 +8,6 @@ class Maxbattle extends Controller {
 	async maxbattleWhoCares(data) {
 		const { areastring, strictareastring } = this.buildAreaString(data.matched)
 
-		data.stationId = data.station_id
-		data.pokemonId = data.battle_pokemon_id
-		data.move_1 = data.battle_pokemon_move_1,
-		data.move_1 = data.battle_pokemon_move_2
-		data.level = data.battle_level
-		data.gmax = (data.level > 5) ? 1 : 0
-		data.gender = data.battle_pokemon_gender
-		data.form = data.battle_pokemon_form
-		data.costume = data.battle_pokemon_costume
-		data.alignment = data.battle_pokemon_alignment
-		data.bread = data.battle_pokemon_bread_mode
-		data.color = 'D000C0'
-
 		let query = `
 		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping from maxbattle
 		join humans on (humans.id = maxbattle.id and humans.current_profile_no = maxbattle.profile_no)
@@ -87,6 +74,18 @@ class Maxbattle extends Controller {
 		try {
 			const logReference = data.stationId
 			data.evolution = 0
+			data.stationId = data.station_id
+			data.pokemonId = data.battle_pokemon_id
+			data.move_1 = data.battle_pokemon_move_1,
+			data.move_1 = data.battle_pokemon_move_2
+			data.level = data.battle_level
+			data.gmax = (data.level > 5) ? 1 : 0
+			data.gender = data.battle_pokemon_gender
+			data.form = data.battle_pokemon_form
+			data.costume = data.battle_pokemon_costume
+			data.alignment = data.battle_pokemon_alignment
+			data.bread = data.battle_pokemon_bread_mode
+			data.color = 'D000C0'
 
 			Object.assign(data, this.config.general.dtsDictionary)
 			data.googleMapUrl = `https://maps.google.com/maps?q=${data.latitude},${data.longitude}`
