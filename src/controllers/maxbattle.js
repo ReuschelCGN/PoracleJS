@@ -82,7 +82,6 @@ class Maxbattle extends Controller {
 			data.gmax = (data.battle_level > 5) ? 1 : 0
 			data.evolution = 0
 			data.gender = 0
-			data.bread = true
 			data.color = 'D000C0'
 
 			Object.assign(data, this.config.general.dtsDictionary)
@@ -139,6 +138,7 @@ class Maxbattle extends Controller {
 				data.quickMoveNameEng = this.GameData.moves[data.battle_pokemon_move_1] ? this.GameData.moves[data.battle_pokemon_move_1].name : ''
 				data.chargeMoveNameEng = this.GameData.moves[data.battle_pokemon_move_2] ? this.GameData.moves[data.battle_pokemon_move_2].name : ''
 				data.shinyPossible = this.shinyPossible.isShinyPossible(data.pokemonId, data.formId)
+			        data.bread = true
 				// eslint-disable-next-line prefer-destructuring
 				data.generation = this.GameData.utilData.genException[`${data.battle_pokemon_id}_${data.battle_pokemon_form}`] || Object.entries(this.GameData.utilData.genData)
 					.find(([, genData]) => data.pokemonId >= genData.min && data.pokemonId <= genData.max)?.[0]
