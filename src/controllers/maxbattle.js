@@ -8,18 +8,31 @@ class Maxbattle extends Controller {
 	async maxbattleWhoCares(data) {
 		const { areastring, strictareastring } = this.buildAreaString(data.matched)
 
+		data.stationId = data.station_id
+		data.pokemonId = data.battle_pokemon_id
+		data.move_1 = data.battle_pokemon_move_1,
+		data.move_1 = data.battle_pokemon_move_2
+		data.level = data.battle_level
+		data.gmax = (data.level > 5) ? 1 : 0
+		data.gender = data.battle_pokemon_gender
+		data.form = data.battle_pokemon_form
+		data.costume = data.battle_pokemon_costume
+		data.alignment = data.battle_pokemon_alignment
+		data.bread = data.battle_pokemon_bread_mode
+		data.color = 'D000C0'
+
 		let query = `
 		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping from maxbattle
 		join humans on (humans.id = maxbattle.id and humans.current_profile_no = maxbattle.profile_no)
 		where humans.enabled = 1 and humans.admin_disable = false and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%maxbattle%') and
-		(pokemon_id=${data.battle_pokemon_id} or (pokemon_id=9000 and (maxbattle.level=${data.battle_level} or maxbattle.level=90))) and
+		(pokemon_id=${data.pokemonId} or (pokemon_id=9000 and (maxbattle.level=${data.level} or maxbattle.level=90))) and
 		(maxbattle.gmax = ${data.gmax} or maxbattle.gmax = 0) and
-		(maxbattle.form = ${data.battle_pokemon_form} or maxbattle.form = 0) and
+		(maxbattle.form = ${data.form} or maxbattle.form = 0) and
 		(maxbattle.evolution = 9000 or maxbattle.evolution = ${data.evolution}) and
-		(maxbattle.move = 9000 or maxbattle.move = ${data.battle_pokemon_move_1} or maxbattle.move = ${data.battle_pokemon_move_2})
+		(maxbattle.move = 9000 or maxbattle.move = ${data.move_1} or maxbattle.move = ${data.move_2})
 		${strictareastring}
 		and
-		((maxbattle.station_id='${data.station_id}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
+		((maxbattle.station_id='${data.stationId}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
 
 		if (['pg', 'mysql'].includes(this.config.database.client)) {
 			query = query.concat(`
@@ -48,7 +61,7 @@ class Maxbattle extends Controller {
 			`)
 			//			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping
 		}
-		this.log.silly(`${data.station_id}: Maxbattle query ${query}`)
+		this.log.silly(`${data.stationId}: Maxbattle query ${query}`)
 		let result = await this.db.raw(query)
 
 		if (!['pg', 'mysql'].includes(this.config.database.client)) {
@@ -72,15 +85,8 @@ class Maxbattle extends Controller {
 		const minTth = this.config.general.alertMinimumTime || 0
 
 		try {
-			const logReference = data.station_id
-
-			data.stationId = data.station_id
-			data.gmax = (data.battle_level > 5) ? 1 : 0
+			const logReference = data.stationId
 			data.evolution = 0
-			data.gender = 0
-			data.costume = 0
-			data.bread = 1
-			data.color = 'D000C0'
 
 			Object.assign(data, this.config.general.dtsDictionary)
 			data.googleMapUrl = `https://maps.google.com/maps?q=${data.latitude},${data.longitude}`
@@ -115,29 +121,28 @@ class Maxbattle extends Controller {
 			data.gameWeatherId = data.weather
 			data.gameWeatherNameEng = data.weather ? this.GameData.utilData.weather[data.gameWeatherId].name : ''
 
-			data.levelNameEng = this.GameData.utilData.maxbattleLevels[data.battle_level]
+			data.levelNameEng = this.GameData.utilData.maxbattleLevels[data.level]
 
-			if (data.battle_pokemon_id) {
-				data.battle_pokemon_form ??= 0
-				const monster = this.GameData.monsters[`${data.battle_pokemon_id}_${data.battle_pokemon_form}`] || this.GameData.monsters[`${data.battle_pokemon_id}_0`]
+			if (data.pokemonId) {
+				data.form ??= 0
+				const monster = this.GameData.monsters[`${data.pokemonId}_${data.form}`] || this.GameData.monsters[`${data.pokemonId}_0`]
 				if (!monster) {
 					this.log.warn(`${logReference}: Couldn't find monster in:`, data)
 					return
 				}
-				data.pokemonId = data.battle_pokemon_id
 				data.nameEng = monster.name
 				data.formId = monster.form.id
 				data.formNameEng = monster.form.name
 				data.genderDataEng = this.GameData.utilData.genders[data.gender]
 				data.evolutionNameEng = data.evolution ? this.GameData.utilData.evolution[data.evolution].name : ''
 				data.tth = moment.preciseDiff(Date.now(), data.battle_end * 1000, true)
-				data.quickMoveId = data.battle_pokemon_move_1 ?? ''
-				data.chargeMoveId = data.battle_pokemon_move_2 ?? ''
-				data.quickMoveNameEng = this.GameData.moves[data.battle_pokemon_move_1] ? this.GameData.moves[data.battle_pokemon_move_1].name : ''
-				data.chargeMoveNameEng = this.GameData.moves[data.battle_pokemon_move_2] ? this.GameData.moves[data.battle_pokemon_move_2].name : ''
+				data.quickMoveId = data.move_1 ?? ''
+				data.chargeMoveId = data.move_2 ?? ''
+				data.quickMoveNameEng = this.GameData.moves[data.move_1] ? this.GameData.moves[data.move_1].name : ''
+				data.chargeMoveNameEng = this.GameData.moves[data.move_2] ? this.GameData.moves[data.move_2].name : ''
 				data.shinyPossible = this.shinyPossible.isShinyPossible(data.pokemonId, data.formId)
 				// eslint-disable-next-line prefer-destructuring
-				data.generation = this.GameData.utilData.genException[`${data.battle_pokemon_id}_${data.battle_pokemon_form}`] || Object.entries(this.GameData.utilData.genData)
+				data.generation = this.GameData.utilData.genException[`${data.pokemonId}_${data.form}`] || Object.entries(this.GameData.utilData.genData)
 					.find(([, genData]) => data.pokemonId >= genData.min && data.pokemonId <= genData.max)?.[0]
 				data.generationNameEng = this.GameData.utilData.genData[data.generation]?.name
 				data.generationRoman = this.GameData.utilData.genData[data.generation]?.roman
@@ -154,9 +159,9 @@ class Maxbattle extends Controller {
 				}] : await this.maxbattleWhoCares(data)
 
 				if (whoCares.length) {
-					this.log.info(`${logReference}: Maxbattle level ${data.battle_level} on ${data.stationName} appeared at [${data.latitude.toFixed(3)},${data.longitude.toFixed(3)}] in areas (${data.matched}) and ${whoCares.length} humans cared.`)
+					this.log.info(`${logReference}: Maxbattle level ${data.level} on ${data.stationName} appeared at [${data.latitude.toFixed(3)},${data.longitude.toFixed(3)}] in areas (${data.matched}) and ${whoCares.length} humans cared.`)
 				} else {
-					this.log.verbose(`${logReference}: Maxbattle level ${data.battle_level} on ${data.stationName} appeared at [${data.latitude.toFixed(3)},${data.longitude.toFixed(3)}] in areas (${data.matched}) and ${whoCares.length} humans cared.`)
+					this.log.verbose(`${logReference}: Maxbattle level ${data.level} on ${data.stationName} appeared at [${data.latitude.toFixed(3)},${data.longitude.toFixed(3)}] in areas (${data.matched}) and ${whoCares.length} humans cared.`)
 				}
 
 				if (!whoCares[0]) return []
@@ -176,9 +181,9 @@ class Maxbattle extends Controller {
 
 				setImmediate(async () => {
 					try {
-						if (this.imgUicons) data.imgUrl = await this.imgUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
-						if (this.imgUiconsAlt) data.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
-						if (this.stickerUicons) data.stickerUrl = await this.stickerUicons.pokemonIcon(data.battle_pokemon_id, data.battle_pokemon_form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages)
+						if (this.imgUicons) data.imgUrl = await this.imgUicons.pokemonIcon(data.pokemonId, data.form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
+						if (this.imgUiconsAlt) data.imgUrlAlt = await this.imgUiconsAlt.pokemonIcon(data.pokemonId, data.form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages) || this.config.fallbacks?.imgUrlStation
+						if (this.stickerUicons) data.stickerUrl = await this.stickerUicons.pokemonIcon(data.pokemonId, data.form, data.evolution, data.gender, data.costume, data.alignment || 0, data.bread, data.shinyPossible && this.config.general.requestShinyImages)
 
 						const geoResult = await this.getAddress({
 							lat: data.latitude,
@@ -188,7 +193,7 @@ class Maxbattle extends Controller {
 
 						require('./common/nightTime').setNightTime(data, disappearTime, this.config)
 
-						await this.getStaticMapUrl(logReference, data, 'maxbattle', ['battle_pokemon_id', 'latitude', 'longitude', 'battle_pokemon_form', 'battle_level', 'imgUrl', 'style'])
+						await this.getStaticMapUrl(logReference, data, 'maxbattle', ['pokemonId', 'latitude', 'longitude', 'form', 'level', 'imgUrl', 'style'])
 						data.intersection = await this.obtainIntersection(data)
 
 						data.staticmap = data.staticMap // deprecated
@@ -378,7 +383,7 @@ class Maxbattle extends Controller {
 						}
 						this.emit('postMessage', jobs)
 					} catch (e) {
-						this.log.error(`${data.station_id}: Can't seem to handle maxbattle (user cared): `, e, data)
+						this.log.error(`${data.stationId}: Can't seem to handle maxbattle (user cared): `, e, data)
 					}
 				})
 				return []
@@ -386,7 +391,7 @@ class Maxbattle extends Controller {
 
 			return []
 		} catch (e) {
-			this.log.error(`${data.station_id}: Can't seem to handle maxbattle `, e, data)
+			this.log.error(`${data.stationId}: Can't seem to handle maxbattle `, e, data)
 		}
 	}
 }
