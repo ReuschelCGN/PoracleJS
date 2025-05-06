@@ -8,10 +8,6 @@ class Maxbattle extends Controller {
 	async maxbattleWhoCares(data) {
 		const { areastring, strictareastring } = this.buildAreaString(data.matched)
 
-		data.gmax = (data.battle_level > 5) ? 1 : 0
-		data.evolution = 0
-		data.gender = 0
-
 		let query = `
 		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping from maxbattle
 		join humans on (humans.id = maxbattle.id and humans.current_profile_no = maxbattle.profile_no)
@@ -82,6 +78,8 @@ class Maxbattle extends Controller {
 			data.gmax = (data.battle_level > 5) ? 1 : 0
 			data.evolution = 0
 			data.gender = 0
+			data.costume = 0
+			data.bread = 1
 			data.color = 'D000C0'
 
 			Object.assign(data, this.config.general.dtsDictionary)
@@ -138,7 +136,6 @@ class Maxbattle extends Controller {
 				data.quickMoveNameEng = this.GameData.moves[data.battle_pokemon_move_1] ? this.GameData.moves[data.battle_pokemon_move_1].name : ''
 				data.chargeMoveNameEng = this.GameData.moves[data.battle_pokemon_move_2] ? this.GameData.moves[data.battle_pokemon_move_2].name : ''
 				data.shinyPossible = this.shinyPossible.isShinyPossible(data.pokemonId, data.formId)
-			        data.bread = 1
 				// eslint-disable-next-line prefer-destructuring
 				data.generation = this.GameData.utilData.genException[`${data.battle_pokemon_id}_${data.battle_pokemon_form}`] || Object.entries(this.GameData.utilData.genData)
 					.find(([, genData]) => data.pokemonId >= genData.min && data.pokemonId <= genData.max)?.[0]
