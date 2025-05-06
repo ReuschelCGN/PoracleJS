@@ -8,18 +8,20 @@ class Maxbattle extends Controller {
 	async maxbattleWhoCares(data) {
 		const { areastring, strictareastring } = this.buildAreaString(data.matched)
 
+		data.gmax = (data.battle_level > 5) ? 1 : 0
+
 		let query = `
 		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping from maxbattle
 		join humans on (humans.id = maxbattle.id and humans.current_profile_no = maxbattle.profile_no)
 		where humans.enabled = 1 and humans.admin_disable = false and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%maxbattle%') and
-		(pokemon_id=${data.pokemonId} or (pokemon_id=9000 and (maxbattle.level=${data.level} or maxbattle.level=90))) and
+		(pokemon_id=${data.battle_pokemon_id} or (pokemon_id=9000 and (maxbattle.level=${data.battle_level} or maxbattle.level=90))) and
 		(maxbattle.gmax = ${data.gmax} or maxbattle.gmax = 0) and
-		(maxbattle.form = ${data.form} or maxbattle.form = 0) and
+		(maxbattle.form = ${data.battle_pokemon_form} or maxbattle.form = 0) and
 		(maxbattle.evolution = 9000 or maxbattle.evolution = ${data.evolution}) and
-		(maxbattle.move = 9000 or maxbattle.move = ${data.move_1} or maxbattle.move = ${data.move_2})
+		(maxbattle.move = 9000 or maxbattle.move = ${data.battle_pokemon_move_1} or maxbattle.move = ${data.battle_pokemon_move_2})
 		${strictareastring}
 		and
-		((maxbattle.station_id='${data.stationId}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
+		((maxbattle.station_id='${data.station_id}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
 
 		if (['pg', 'mysql'].includes(this.config.database.client)) {
 			query = query.concat(`
@@ -48,7 +50,7 @@ class Maxbattle extends Controller {
 			`)
 			//			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping
 		}
-		this.log.silly(`${data.stationId}: Maxbattle query ${query}`)
+		this.log.silly(`${data.station_id}: Maxbattle query ${query}`)
 		let result = await this.db.raw(query)
 
 		if (!['pg', 'mysql'].includes(this.config.database.client)) {
@@ -72,8 +74,8 @@ class Maxbattle extends Controller {
 		const minTth = this.config.general.alertMinimumTime || 0
 
 		try {
-			const logReference = data.stationId
-			data.evolution = 0
+			const logReference = data.station_id
+
 			data.stationId = data.station_id
 			data.pokemonId = data.battle_pokemon_id
 			data.move_1 = data.battle_pokemon_move_1,
@@ -81,6 +83,7 @@ class Maxbattle extends Controller {
 			data.level = data.battle_level
 			data.gmax = (data.level > 5) ? 1 : 0
 			data.gender = data.battle_pokemon_gender
+			data.evolution = 0
 			data.form = data.battle_pokemon_form
 			data.costume = data.battle_pokemon_costume
 			data.alignment = data.battle_pokemon_alignment
@@ -192,7 +195,7 @@ class Maxbattle extends Controller {
 
 						require('./common/nightTime').setNightTime(data, disappearTime, this.config)
 
-						await this.getStaticMapUrl(logReference, data, 'maxbattle', ['pokemonId', 'latitude', 'longitude', 'form', 'level', 'imgUrl', 'style'])
+						await this.getStaticMapUrl(logReference, data, 'maxbattle', ['battle_pokemon_id', 'latitude', 'longitude', 'battle_pokemon_form', 'battle_level', 'imgUrl', 'style'])
 						data.intersection = await this.obtainIntersection(data)
 
 						data.staticmap = data.staticMap // deprecated
@@ -382,7 +385,7 @@ class Maxbattle extends Controller {
 						}
 						this.emit('postMessage', jobs)
 					} catch (e) {
-						this.log.error(`${data.stationId}: Can't seem to handle maxbattle (user cared): `, e, data)
+						this.log.error(`${data.station_id}: Can't seem to handle maxbattle (user cared): `, e, data)
 					}
 				})
 				return []
@@ -390,7 +393,7 @@ class Maxbattle extends Controller {
 
 			return []
 		} catch (e) {
-			this.log.error(`${data.stationId}: Can't seem to handle maxbattle `, e, data)
+			this.log.error(`${data.station_id}: Can't seem to handle maxbattle `, e, data)
 		}
 	}
 }
