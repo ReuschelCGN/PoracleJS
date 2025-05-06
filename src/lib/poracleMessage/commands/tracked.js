@@ -186,7 +186,7 @@ function lureRowText(config, translator, GameData, lure) {
 }
 
 async function maxbattleRowText(config, translator, GameData, maxbattle, scannerQuery) {
-	const mon = Object.values(GameData.monsters).find((m) => m.id === maxbattle.battle_pokemon_id && m.form.id === maxbattle.battle_pokemon_form)
+	const mon = Object.values(GameData.monsters).find((m) => m.id === maxbattle.pokemon_id && m.form.id === maxbattle.form)
 	const monsterName = mon ? translator.translate(mon.name) : 'levelMon'
 	let formName = mon ? translator.translate(mon.form.name) : 'levelMonForm'
 	if (!mon || formName === undefined || mon.form.id === 0 && formName === 'Normal') formName = ''
@@ -194,10 +194,10 @@ async function maxbattleRowText(config, translator, GameData, maxbattle, scanner
 	let stationNameText = null
 	if (maxbattle.station_id) stationNameText = scannerQuery ? await scannerQuery.getStationName(maxbattle.station_id) || maxbattle.station_id : maxbattle.station_id
 
-	const moveName = maxbattle.battle_pokemon_move_1 !== 9000 && GameData.moves[maxbattle.battle_pokemon_move_1] ? `${translator.translate(GameData.moves[maxbattle.battle_pokemon_move_1].name)}/${translator.translate(GameData.moves[maxbattle.battle_pokemon_move_1].type)}` : ''
+	const moveName = maxbattle.move !== 9000 && GameData.moves[maxbattle.move] ? `${translator.translate(GameData.moves[maxbattle.move].name)}/${translator.translate(GameData.moves[maxbattle.move].type)}` : ''
 
-	if (+maxbattle.battle_pokemon_id === 9000) {
-		return `**${maxbattle.battle_level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${maxbattle.battle_level}`} ${translator.translate('maxbattles')}** ${maxbattle.distance ? ` | ${translator.translate('distance')}: ${maxbattle.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''} ${standardText(config, translator, maxbattle)}${maxbattle.station_id ? ` ${translator.translate('at station ')} ${stationNameText}` : ''}`
+	if (+maxbattle.pokemon_id === 9000) {
+		return `**${maxbattle.level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${maxbattle.level}`} ${translator.translate('maxbattles')}** ${maxbattle.distance ? ` | ${translator.translate('distance')}: ${maxbattle.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''} ${standardText(config, translator, maxbattle)}${maxbattle.station_id ? ` ${translator.translate('at station ')} ${stationNameText}` : ''}`
 	}
 
 	return `**${monsterName}**${formName ? ` ${translator.translate('form')}: ${formName}` : ''}${maxbattle.distance ? ` | ${translator.translate('distance')}: ${maxbattle.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''} ${standardText(config, translator, maxbattle)}${maxbattle.station_id ? ` ${translator.translate('at station ')} ${stationNameText}` : ''}`
