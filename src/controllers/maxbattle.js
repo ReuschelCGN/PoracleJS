@@ -106,7 +106,7 @@ class Maxbattle extends Controller {
 				data.name = this.escapeJsonString(data.name)
 				data.stationName = data.name
 			}
-			const disappearTime = moment(data.end * 1000).tz(geoTz.find(data.latitude, data.longitude)[0].toString())
+			const disappearTime = moment(data.battle_end * 1000).tz(geoTz.find(data.latitude, data.longitude)[0].toString())
 			data.disappearTime = disappearTime.format(this.config.locale.time)
 
 			data.matchedAreas = this.pointInArea([data.latitude, data.longitude])
