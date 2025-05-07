@@ -314,18 +314,18 @@ exports.run = async (client, msg, args, options) => {
 
 				for (const maxbattle of maxbattles) {
 					message += `${prefix}maxbattle `
-					if (maxbattle.battle_pokemon_id === 9000) {
-						message += `level:${maxbattle.battle_level}`
+					if (maxbattle.pokemon_id === 9000) {
+						message += `level:${maxbattle.level}`
 					} else {
-						const mon = client.GameData.monsters[`${maxbattle.battle_pokemon_id}_${maxbattle.battle_pokemon_form}`]
+						const mon = client.GameData.monsters[`${maxbattle.pokemon_id}_${maxbattle.form}`]
 
 						message += `${mon.name}`
-						if (maxbattle.battle_pokemon_form) message += ` form:${mon.form.name}` // will not work
+						if (maxbattle.form) message += ` form:${mon.form.name}` // will not work
 					}
 					for (const [param, [dbFieldName, defaultValue]] of Object.entries(maxbattleParameters)) {
 						if (maxbattle[dbFieldName] !== defaultValue) message += ` ${param}:${maxbattle[dbFieldName]}`
 					}
-					if (maxbattle.battle_level > 5) message += ' Gmax'
+					if (maxbattle.level > 5) message += ' Gmax'
 					if (maxbattle.clean) message += ' clean'
 
 					message += '\n'
