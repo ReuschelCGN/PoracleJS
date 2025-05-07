@@ -21,7 +21,7 @@ class Maxbattle extends Controller {
 		(maxbattle.move = 9000 or maxbattle.move = ${data.battle_pokemon_move_1} or maxbattle.move = ${data.battle_pokemon_move_2})
 		${strictareastring}
 		and
-		((maxbattle.station_id='${data.station_id}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
+		((maxbattle.station_id='${data.id}' and (humans.blocked_alerts IS NULL OR humans.blocked_alerts NOT LIKE '%specificstation%') ) or (maxbattle.station_id is NULL and `
 
 		if (['pg', 'mysql'].includes(this.config.database.client)) {
 			query = query.concat(`
@@ -50,7 +50,7 @@ class Maxbattle extends Controller {
 			`)
 			//			group by humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping
 		}
-		this.log.silly(`${data.station_id}: Maxbattle query ${query}`)
+		this.log.silly(`${data.id}: Maxbattle query ${query}`)
 		let result = await this.db.raw(query)
 
 		if (!['pg', 'mysql'].includes(this.config.database.client)) {
@@ -74,9 +74,9 @@ class Maxbattle extends Controller {
 		const minTth = this.config.general.alertMinimumTime || 0
 
 		try {
-			const logReference = data.station_id
+			const logReference = data.id
 
-			data.stationId = data.station_id
+			data.stationId = data.id
 			data.pokemonId = data.battle_pokemon_id
 			data.move_1 = data.battle_pokemon_move_1,
 			data.move_2 = data.battle_pokemon_move_2
@@ -386,7 +386,7 @@ class Maxbattle extends Controller {
 						}
 						this.emit('postMessage', jobs)
 					} catch (e) {
-						this.log.error(`${data.station_id}: Can't seem to handle maxbattle (user cared): `, e, data)
+						this.log.error(`${data.id}: Can't seem to handle maxbattle (user cared): `, e, data)
 					}
 				})
 				return []
@@ -394,7 +394,7 @@ class Maxbattle extends Controller {
 
 			return []
 		} catch (e) {
-			this.log.error(`${data.station_id}: Can't seem to handle maxbattle `, e, data)
+			this.log.error(`${data.id}: Can't seem to handle maxbattle `, e, data)
 		}
 	}
 }
