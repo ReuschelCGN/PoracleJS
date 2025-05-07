@@ -348,6 +348,7 @@ class Maxbattle extends Controller {
 								id: data.pokemon_id,
 								baseStats: monster.stats,
 								time: data.disappearTime,
+								tthd: data.tth.days,
 								tthh: data.tth.hours,
 								tthm: data.tth.minutes,
 								tths: data.tth.seconds,
