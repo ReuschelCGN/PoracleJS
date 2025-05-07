@@ -99,7 +99,7 @@ class Maxbattle extends Controller {
 			}
 			// Lat/Lon Format: https://www.yourMapUrl.com/@/:lat/:lon/:zoom
 			if (this.config.general.reactMapURL) {
-				data.reactMapUrl = `${this.config.general.reactMapURL}${!this.config.general.reactMapURL.endsWith('/') ? '/' : ''}id/stations/${data.stationId}`
+				data.reactMapUrl = `${this.config.general.reactMapURL}${!this.config.general.reactMapURL.endsWith('/') ? '/' : ''}id/stations/${data.stationId}/16`
 			}
 			if (this.config.general.rocketMadURL) {
 				data.rocketMadUrl = `${this.config.general.rocketMadURL}${!this.config.general.rocketMadURL.endsWith('/') ? '/' : ''}?lat=${data.latitude}&lon=${data.longitude}&zoom=18.0`
