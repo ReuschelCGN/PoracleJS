@@ -164,6 +164,7 @@ exports.run = async (client, msg, args, options) => {
 					evolution: +evolution,
 					move: +move,
 					gym_id: null,
+					rsvp_changes: +rsvpChanges,
 				})
 			})
 
