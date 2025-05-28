@@ -145,7 +145,7 @@
 {
   "id": 1,
   "language": "en",
-  "type": "max-battle",
+  "type": "maxbattle",
   "default": true,
   "platform": "discord",
   "template": {
@@ -169,7 +169,7 @@
 {
   "id": 1,
   "language": "en",
-  "type": "max-battle",
+  "type": "maxbattle",
   "default": true,
   "platform": "telegram",
   "template": {
