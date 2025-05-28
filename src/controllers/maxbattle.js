@@ -364,7 +364,7 @@ class Maxbattle extends Controller {
 									.join(', '),
 							}
 
-							const templateType = 'max-battle'
+							const templateType = 'maxbattle'
 							const message = await this.createMessage(logReference, templateType, platform, cares.template, language, cares.ping, view)
 
 							const work = {
