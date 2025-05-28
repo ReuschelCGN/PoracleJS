@@ -97,7 +97,7 @@ module.exports = async (fastify, options) => {
 				ping: '',
 				template: (row.template || fastify.config.general.defaultTemplateName).toString(),
 				pokemon_id: +defaultTo(row.pokemon_id, 9000),
-				exclusive: +defaultTo(row.exclusive, 0),
+				gmax: +defaultTo(row.gmax, 0),
 				distance: +defaultTo(row.distance, 0),
 				clean: +defaultTo(+row.clean, 0),
 				level: +level,
