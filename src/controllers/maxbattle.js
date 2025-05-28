@@ -8,7 +8,7 @@ class Maxbattle extends Controller {
 	async maxbattleWhoCares(data) {
 		const { areastring, strictareastring } = this.buildAreaString(data.matched)
 
-		data.gmax = (data.battle_level > 5) ? 1 : 0
+		data.gmax = (data.battle_level > 6) ? 1 : 0
 
 		let query = `
 		select humans.id, humans.name, humans.type, humans.language, humans.latitude, humans.longitude, maxbattle.template, maxbattle.distance, maxbattle.clean, maxbattle.ping from maxbattle
@@ -81,7 +81,7 @@ class Maxbattle extends Controller {
 			data.move_1 = data.battle_pokemon_move_1,
 			data.move_2 = data.battle_pokemon_move_2
 			data.level = data.battle_level
-			data.gmax = (data.level > 5) ? 1 : 0
+			data.gmax = (data.level > 6) ? 1 : 0
 			data.gender = data.battle_pokemon_gender
 			data.evolution = 0
 			data.form = data.battle_pokemon_form
