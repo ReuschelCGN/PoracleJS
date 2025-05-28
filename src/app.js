@@ -803,7 +803,7 @@ async function processOne(hook) {
 					break
 				}
 				if (!hook.message.poracleTest) {
-					fastify.webhooks.info(`maxbattle ${JSON.stringify(hook.message)}`)
+					fastify.webhooks.info(`max_battle ${JSON.stringify(hook.message)}`)
 					const cacheKey = `${hook.message.id}${hook.message.battle_end}${hook.message.battle_pokemon_id}`
 
 					if (fastify.cache.get(cacheKey)) {
