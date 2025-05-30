@@ -119,14 +119,14 @@ module.exports = async (fastify, options) => {
 			if ((alreadyPresent.length + updates.length + insert.length) > 50) {
 				message = translator.translateFormat('I have made a lot of changes. See {0}{1} for details', '!', /* util.prefix, */ translator.translate('tracked'))
 			} else {
-				for (const maxbattle of alreadyPresent) {
-					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, maxbattle, fastify.scannerQuery), '\n')
+				for (const i of alreadyPresent) {
+					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
-				for (const maxbattle of updates) {
-					message = message.concat(translator.translate('Updated: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, maxbattle, fastify.scannerQuery), '\n')
+				for (const i of updates) {
+					message = message.concat(translator.translate('Updated: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
-				for (const maxbattle of insert) {
-					message = message.concat(translator.translate('New: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, maxbattle, fastify.scannerQuery), '\n')
+				for (const i of insert) {
+					message = message.concat(translator.translate('New: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
 			}
 
