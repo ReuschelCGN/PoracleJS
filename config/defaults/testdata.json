@@ -230,5 +230,11 @@
     "test": "level1",
     "location": "current",
     "webhook": {"battle_end": 1745895600, "battle_level": 1, "battle_pokemon_alignment": 0, "battle_pokemon_bread_mode": 1, "battle_pokemon_costume": 0, "battle_pokemon_form": 0, "battle_pokemon_gender": 2, "battle_pokemon_id": 831, "battle_pokemon_move_1": 221, "battle_pokemon_move_2": 333, "battle_start": 1745778600, "end_time": 1745895600, "is_battle_available": true, "latitude": 50.998899, "longitude": 6.939451, "name": "Parkour Movement", "start_time": 1745636400, "id": "bb161a9eff2a47c291df2906a02f11de.23", "total_stationed_gmax": 0, "total_stationed_pokemon": 0, "updated": 1745850055}
+  },
+  {
+    "type": "max_battle",
+    "test":"gmax",
+    "location":"keep",
+    "webhook":{"battle_end": 1745859600, "battle_level": 7, "battle_pokemon_alignment": 0, "battle_pokemon_bread_mode": 2, "battle_pokemon_costume": 0, "battle_pokemon_form": 815, "battle_pokemon_gender": 1, "battle_pokemon_id": 68, "battle_pokemon_move_1": 243, "battle_pokemon_move_2": 64, "battle_start": 1745856000, "end_time": 1746068400, "is_battle_available": true, "latitude": 50.964694, "longitude": 6.953887, "name": "Taqsim Patisserie", "start_time": 1745809200, "station_id": "4f949bb0bc9244e6b46e9e665c050970.23", "total_stationed_gmax": 3, "total_stationed_pokemon": 8, "updated": 1745857449}
   }
 ]
