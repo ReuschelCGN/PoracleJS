@@ -48,18 +48,26 @@ class PogoEventParser {
 			// create filtered pokemon spawn event list
 			// for now, only filter by eventType until spawn information is available
 			let filteredEvents = []
-			for (const event of events.filter((x) => x.eventType === 'community-day' || x.eventType === 'pokemon-spotlight-hour' || (if (x.extraData.generic.hasSpawns) {x.extraData.generic.hasSpawns})) {
+			for (const event of events.filter((x) => x.eventType === (x.extraData !== 'null') )) {
 				filteredEvents.push(event)
 			}
-			this.spawnEvents = filteredEvents
+			let filteredCleanEvents = []
+			for (const event of filteredEvents.filter((x) => x.eventType === 'community-day' || x.eventType === 'pokemon-spotlight-hour' || x.extraData.generic.hasSpawns)) {
+				filteredCleanEvents.push(event)
+			}
+			this.spawnEvents = filteredCleanEvents
 
 			// create filtered quest event list
 			// for now, only filter by eventType until field research task information is available
 			filteredEvents = []
-			for (const event of events.filter((x) => x.eventType === 'community-day' || x.extraData.generic.hasFieldResearchTasks)) {
+			for (const event of events.filter((x) => x.eventType === (x.extraData !== 'null') )) {
 				filteredEvents.push(event)
 			}
-			this.questEvents = filteredEvents
+			let filteredCleanEvents = []
+			for (const event of filteredEvents.filter((x) => x.eventType === 'community-day' || x.extraData.generic.hasFieldResearchTasks)) {
+				filteredCleanEvents.push(event)
+			}
+			this.questEvents = filteredCleanEvents
 		} catch (err) {
 			this.log.error('PogoEvents: Error creating filtered spawn and quest event lists', err)
 		}
