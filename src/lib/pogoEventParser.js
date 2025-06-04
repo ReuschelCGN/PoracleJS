@@ -48,10 +48,10 @@ class PogoEventParser {
 			// create filtered pokemon spawn event list
 			// for now, only filter by eventType until spawn information is available
 			let filteredEvents = []
+			let filteredCleanEvents = []
 			for (const event of events.filter((x) => x.eventType === (x.extraData !== 'null') )) {
 				filteredEvents.push(event)
 			}
-			let filteredCleanEvents = []
 			for (const event of filteredEvents.filter((x) => x.eventType === 'community-day' || x.eventType === 'pokemon-spotlight-hour' || x.extraData.generic.hasSpawns)) {
 				filteredCleanEvents.push(event)
 			}
@@ -63,7 +63,7 @@ class PogoEventParser {
 			for (const event of events.filter((x) => x.eventType === (x.extraData !== 'null') )) {
 				filteredEvents.push(event)
 			}
-			let filteredCleanEvents = []
+			filteredCleanEvents = []
 			for (const event of filteredEvents.filter((x) => x.eventType === 'community-day' || x.extraData.generic.hasFieldResearchTasks)) {
 				filteredCleanEvents.push(event)
 			}
