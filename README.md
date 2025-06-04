@@ -1,8 +1,6 @@
 <p align="center">
           <img width="256" src="https://raw.githubusercontent.com/KartulUdus/PoracleJS/images/starchy.svg?sanitize=true">
 </p>
-  
-[![Build Status](https://travis-ci.org/KartulUdus/PoracleJS.svg?branch=master)](https://travis-ci.org/KartulUdus/PoracleJS)
 
 #### Introduction 
 

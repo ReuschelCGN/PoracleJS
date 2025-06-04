@@ -100,6 +100,7 @@ module.exports = async (fastify, options) => {
 				clean: +defaultTo(row.clean, 0),
 				level: +level,
 				gym_id: row.gym_id ? row.gym_id : null,
+				rsvp_changes: row.rsvp_changes >= 0 && row.rsvp_changes <= 2 ? row.rsvp_changes : 0,
 			}
 		})
 
@@ -141,14 +142,14 @@ module.exports = async (fastify, options) => {
 			if ((alreadyPresent.length + updates.length + insert.length) > 50) {
 				message = translator.translateFormat('I have made a lot of changes. See {0}{1} for details', '!', /* util.prefix, */ translator.translate('tracked'))
 			} else {
-				for (const lure of alreadyPresent) {
-					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.eggRowText(fastify.config, translator, fastify.GameData, lure, fastify.scannerQuery), '\n')
+				for (const i of alreadyPresent) {
+					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.eggRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
-				for (const lure of updates) {
-					message = message.concat(translator.translate('Updated: '), await trackedCommand.eggRowText(fastify.config, translator, fastify.GameData, lure, fastify.scannerQuery), '\n')
+				for (const i of updates) {
+					message = message.concat(translator.translate('Updated: '), await trackedCommand.eggRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
-				for (const lure of insert) {
-					message = message.concat(translator.translate('New: '), await trackedCommand.eggRowText(fastify.config, translator, fastify.GameData, lure, fastify.scannerQuery), '\n')
+				for (const i of insert) {
+					message = message.concat(translator.translate('New: '), await trackedCommand.eggRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
 			}
 
