@@ -29,7 +29,7 @@ exports.run = async (client, msg, args, options) => {
 
 		if (args.length === 0) {
 			await msg.reply(
-				translator.translateFormat('Valid commands are e.g. `{0}raid level5`, `{0}raid articuno`, `{0}raid remove everything`', util.prefix),
+				translator.translateFormat('Valid commands are e.g. `{0}maxbattle level5`, `{0}maxbattle relaxo gmax`, `{0}maxbattle remove everything`', util.prefix),
 				{ style: 'markdown' },
 			)
 			await helpCommand.provideSingleLineHelp(client, msg, util, language, target, commandName)
@@ -44,14 +44,12 @@ exports.run = async (client, msg, args, options) => {
 		const commandEverything = !!args.find((arg) => arg === 'everything')
 
 		let monsters
-		let exclusive = 0
+		let gmax = 0
 		let distance = 0
-		let team = 4
 		let template = client.config.general.defaultTemplateName
 		let clean = false
 		const evolution = 9000
 		let move = 9000
-		let rsvpChanges = 0
 		const levelSet = new Set()
 		const pings = msg.getPings()
 		const formNames = args.filter((arg) => arg.match(client.re.formRe)).map((arg) => client.translatorFactory.reverseTranslateCommand(arg.match(client.re.formRe)[2], true).toLowerCase())
@@ -84,7 +82,7 @@ exports.run = async (client, msg, args, options) => {
 		if (gen) monsters = monsters.filter((mon) => mon.id >= gen.min && mon.id <= gen.max)
 
 		for (const element of args) {
-			if (element === 'ex') exclusive = 1
+			if (element === 'gmax') gmax = 1
 			else if (element.match(client.re.levelRe)) levelSet.add(+element.match(client.re.levelRe)[2])
 			else if (element.match(client.re.templateRe)) [,, template] = element.match(client.re.templateRe)
 			else if (element.match(client.re.dRe)) [,, distance] = element.match(client.re.dRe)
@@ -99,15 +97,8 @@ exports.run = async (client, msg, args, options) => {
 					return msg.reply(translator.translateFormat('Unrecognised move name {0}', typeName ? `${moveName}/${typeName}` : moveName))
 				}
 				[move] = moveData
-			} else if (element === 'instinct' || element === 'yellow') team = 3
-			else if (element === 'valor' || element === 'red') team = 2
-			else if (element === 'mystic' || element === 'blue') team = 1
-			else if (element === 'harmony' || element === 'gray') team = 0
-			else if (element === 'everything') Object.keys(client.GameData.utilData.raidLevels).forEach((x) => levelSet.add(+x))
+			} else if (element === 'everything') Object.keys(client.GameData.utilData.maxbattleLevels).forEach((x) => levelSet.add(+x))
 			else if (element === 'clean') clean = true
-			else if (element === 'no rsvp') rsvpChanges = 0
-			else if (element === 'rsvp') rsvpChanges = 1
-			else if (element === 'rsvp only') rsvpChanges = 2
 		}
 		if (client.config.tracking.defaultDistance !== 0 && distance === 0 && !msg.isFromAdmin) distance = client.config.tracking.defaultDistance
 		if (client.config.tracking.maxDistance !== 0 && distance > client.config.tracking.maxDistance && !msg.isFromAdmin) distance = client.config.tracking.maxDistance
@@ -135,17 +126,15 @@ exports.run = async (client, msg, args, options) => {
 				profile_no: currentProfileNo,
 				pokemon_id: mon.id,
 				ping: pings,
-				exclusive: +exclusive,
+				gmax: +gmax,
 				template: template.toString(),
 				distance: +distance,
-				team: +team,
 				clean: +clean,
 				level: 9000,
 				form: mon.form.id,
 				evolution: +evolution,
 				move: +move,
-				gym_id: null,
-				rsvp_changes: +rsvpChanges,
+				station_id: null,
 			}))
 
 			levels.forEach((level) => {
@@ -154,21 +143,19 @@ exports.run = async (client, msg, args, options) => {
 					profile_no: currentProfileNo,
 					pokemon_id: 9000,
 					ping: pings,
-					exclusive: +exclusive,
+					gmax: +gmax,
 					template: template.toString(),
 					distance: +distance,
-					team: +team,
 					clean: +clean,
 					level: +level,
 					form: 0,
 					evolution: +evolution,
 					move: +move,
-					gym_id: null,
-					rsvp_changes: +rsvpChanges,
+					station_id: null,
 				})
 			})
 
-			const tracked = await client.query.selectAllQuery('raid', { id: target.id, profile_no: currentProfileNo })
+			const tracked = await client.query.selectAllQuery('maxbattle', { id: target.id, profile_no: currentProfileNo })
 			const updates = []
 			const alreadyPresent = []
 
@@ -204,19 +191,19 @@ exports.run = async (client, msg, args, options) => {
 			if ((alreadyPresent.length + updates.length + insert.length) > 50) {
 				message = translator.translateFormat('I have made a lot of changes. See {0}{1} for details', util.prefix, translator.translate('tracked'))
 			} else {
-				for (const raid of alreadyPresent) {
-					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.raidRowText(client.config, translator, client.GameData, raid, client.scannerQuery), '\n')
+				for (const maxbattle of alreadyPresent) {
+					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.maxbattleRowText(client.config, translator, client.GameData, maxbattle, client.scannerQuery), '\n')
 				}
-				for (const raid of updates) {
-					message = message.concat(translator.translate('Updated: '), await trackedCommand.raidRowText(client.config, translator, client.GameData, raid, client.scannerQuery), '\n')
+				for (const maxbattle of updates) {
+					message = message.concat(translator.translate('Updated: '), await trackedCommand.maxbattleRowText(client.config, translator, client.GameData, maxbattle, client.scannerQuery), '\n')
 				}
-				for (const raid of insert) {
-					message = message.concat(translator.translate('New: '), await trackedCommand.raidRowText(client.config, translator, client.GameData, raid, client.scannerQuery), '\n')
+				for (const maxbattle of insert) {
+					message = message.concat(translator.translate('New: '), await trackedCommand.maxbattleRowText(client.config, translator, client.GameData, maxbattle, client.scannerQuery), '\n')
 				}
 			}
 
 			await client.query.deleteWhereInQuery(
-				'raid',
+				'maxbattle',
 				{
 					id: target.id,
 					profile_no: currentProfileNo,
@@ -225,33 +212,33 @@ exports.run = async (client, msg, args, options) => {
 				'uid',
 			)
 
-			await client.query.insertQuery('raid', [...updates, ...insert])
+			await client.query.insertQuery('maxbattle', [...updates, ...insert])
 
-			//			const result = await client.query.insertOrUpdateQuery('raid', insert)
-			client.log.info(`${logReference}: ${target.name} started tracking level ${levels.join(', ')} raids`)
+			//			const result = await client.query.insertOrUpdateQuery('maxbattle', insert)
+			client.log.info(`${logReference}: ${target.name} started tracking level ${levels.join(', ')} maxbattles`)
 			await msg.reply(message, { style: 'markdown' })
 			reaction = insert.length ? '✅' : reaction
 		} else {
 			const monsterIds = monsters.map((mon) => mon.id)
 			let result = 0
 			if (monsterIds.length) {
-				const monResult = await client.query.deleteWhereInQuery('raid', {
+				const monResult = await client.query.deleteWhereInQuery('maxbattle', {
 					id: target.id,
 					profile_no: currentProfileNo,
 				}, monsterIds, 'pokemon_id')
 				result += monResult
 			}
 			if (levels.length) {
-				const lvlResult = await client.query.deleteWhereInQuery('raid', {
+				const lvlResult = await client.query.deleteWhereInQuery('maxbattle', {
 					id: target.id,
 					profile_no: currentProfileNo,
 				}, levels, 'level')
-				client.log.info(`${logReference}: ${target.name} stopped tracking level ${levels.join(', ')} raids`)
+				client.log.info(`${logReference}: ${target.name} stopped tracking level ${levels.join(', ')} maxbattles`)
 				result += lvlResult
 			}
 			if (commandEverything) {
-				const everythingResult = await client.query.deleteQuery('raid', { id: target.id, profile_no: currentProfileNo })
-				client.log.info(`${logReference}: ${target.name} stopped tracking all raids`)
+				const everythingResult = await client.query.deleteQuery('maxbattle', { id: target.id, profile_no: currentProfileNo })
+				client.log.info(`${logReference}: ${target.name} stopped tracking all maxbattles`)
 				result += everythingResult
 			}
 			msg.reply(
@@ -267,7 +254,7 @@ exports.run = async (client, msg, args, options) => {
 		}
 		await msg.react(reaction)
 	} catch (err) {
-		client.log.error(`${logReference} Raid command unhappy:`, err)
+		client.log.error(`${logReference} MaxBattle command unhappy:`, err)
 		msg.reply(`There was a problem making these changes, the administrator can find the details with reference ${logReference}`)
 	}
 }

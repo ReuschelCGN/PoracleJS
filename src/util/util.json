@@ -547,7 +547,7 @@
 		"506": {
 			"name": "Sparkly Lure",
 			"emoji": "lure-sparkly",
-			"color": "FFFF00"
+			"color": "F9E418"
 		}
 	},
 	"genders": {
@@ -882,6 +882,14 @@
 		"13": "Level 3 Shadow",
 		"14": "Level 4 Shadow",
 		"15": "Shadow Legendary"
+	},
+	"maxbattleLevels": {
+		"1": "1 Star Max Battle",
+		"2": "2 Star Max Battle",
+		"3": "3 Star Max Battle",
+		"4": "4 Star Max Battle",
+		"5": "Legendary Max Battle",
+		"7": "Gigantamax Battle"
 	},
 	"emojis": {
 		"lure-normal": "\ud83d\udccd",

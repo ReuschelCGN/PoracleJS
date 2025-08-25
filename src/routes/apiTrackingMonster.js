@@ -128,7 +128,7 @@ module.exports = async (fastify, options) => {
 				min_cp: +defaultTo(row.min_cp, 0),
 				max_cp: +defaultTo(row.max_cp, 9000),
 				min_level: +defaultTo(row.min_level, 0),
-				max_level: +defaultTo(row.max_level, 40),
+				max_level: +defaultTo(row.max_level, 50),
 				atk: +defaultTo(row.atk, 0),
 				def: +defaultTo(row.def, 0),
 				sta: +defaultTo(row.sta, 0),
@@ -197,14 +197,14 @@ module.exports = async (fastify, options) => {
 			if ((alreadyPresent.length + updates.length + insert.length) > 50) {
 				message = translator.translateFormat('I have made a lot of changes. See {0}{1} for details', '!', /* util.prefix, */ translator.translate('tracked'))
 			} else {
-				for (const lure of alreadyPresent) {
-					message = message.concat(translator.translate('Unchanged: '), trackedCommand.monsterRowText(fastify.config, translator, fastify.GameData, lure), '\n')
+				for (const i of alreadyPresent) {
+					message = message.concat(translator.translate('Unchanged: '), trackedCommand.monsterRowText(fastify.config, translator, fastify.GameData, i), '\n')
 				}
-				for (const lure of updates) {
-					message = message.concat(translator.translate('Updated: '), trackedCommand.monsterRowText(fastify.config, translator, fastify.GameData, lure), '\n')
+				for (const i of updates) {
+					message = message.concat(translator.translate('Updated: '), trackedCommand.monsterRowText(fastify.config, translator, fastify.GameData, i), '\n')
 				}
-				for (const lure of insert) {
-					message = message.concat(translator.translate('New: '), trackedCommand.monsterRowText(fastify.config, translator, fastify.GameData, lure), '\n')
+				for (const i of insert) {
+					message = message.concat(translator.translate('New: '), trackedCommand.monsterRowText(fastify.config, translator, fastify.GameData, i), '\n')
 				}
 			}
 

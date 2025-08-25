@@ -66,13 +66,23 @@ async function raidRowText(config, translator, GameData, raid, scannerQuery) {
 	let gymNameText = null
 	if (raid.gym_id) gymNameText = scannerQuery ? await scannerQuery.getGymName(raid.gym_id) || raid.gym_id : raid.gym_id
 
+	let rsvpText = ''
+	switch (raid.rsvp_changes) {
+		case 0:	rsvpText = translator.translate('without rsvp updates')
+			break
+		case 1: rsvpText = translator.translate('including rsvp updates')
+			break
+		case 2: rsvpText = translator.translate('rsvp only')
+			break
+		default: break
+	}
 	const moveName = raid.move !== 9000 && GameData.moves[raid.move] ? `${translator.translate(GameData.moves[raid.move].name)}/${translator.translate(GameData.moves[raid.move].type)}` : ''
 
 	if (+raid.pokemon_id === 9000) {
-		return `**${raid.level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${raid.level}`} ${translator.translate('raids')}** ${raid.distance ? ` | ${translator.translate('distance')}: ${raid.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''}${raid.team === 4 ? '' : ` | ${translator.translate('controlled by')} ${raidTeam}`}${raid.exclusive ? ` | ${translator.translate('must be an EX Gym')}` : ''} ${standardText(config, translator, raid)}${raid.gym_id ? ` ${translator.translate('at gym ')} ${gymNameText}` : ''}`
+		return `**${raid.level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${raid.level}`} ${translator.translate('raids')}** ${raid.distance ? ` | ${translator.translate('distance')}: ${raid.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''}${raid.team === 4 ? '' : ` | ${translator.translate('controlled by')} ${raidTeam}`}${raid.exclusive ? ` | ${translator.translate('must be an EX Gym')}` : ''} ${standardText(config, translator, raid)}${raid.gym_id ? ` ${translator.translate('at gym ')} ${gymNameText}` : ''} ${rsvpText}`
 	}
 
-	return `**${monsterName}**${formName ? ` ${translator.translate('form')}: ${formName}` : ''}${raid.distance ? ` | ${translator.translate('distance')}: ${raid.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''}${raid.team === 4 ? '' : ` | ${translator.translate('controlled by')} ${raidTeam}`}${raid.exclusive ? ` | ${translator.translate('must be an EX Gym')}` : ''} ${standardText(config, translator, raid)}${raid.gym_id ? ` ${translator.translate('at gym ')} ${gymNameText}` : ''}`
+	return `**${monsterName}**${formName ? ` ${translator.translate('form')}: ${formName}` : ''}${raid.distance ? ` | ${translator.translate('distance')}: ${raid.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''}${raid.team === 4 ? '' : ` | ${translator.translate('controlled by')} ${raidTeam}`}${raid.exclusive ? ` | ${translator.translate('must be an EX Gym')}` : ''} ${standardText(config, translator, raid)}${raid.gym_id ? ` ${translator.translate('at gym ')} ${gymNameText}` : ''} ${rsvpText}`
 }
 
 async function gymRowText(config, translator, GameData, gym, scannerQuery) {
@@ -107,7 +117,18 @@ async function eggRowText(config, translator, GameData, egg, scannerQuery) {
 	let gymNameText = null
 	if (egg.gym_id) gymNameText = scannerQuery ? await scannerQuery.getGymName(egg.gym_id) || egg.gym_id : egg.gym_id
 
-	return `**${egg.level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${egg.level}`} ${translator.translate('eggs')}** ${egg.distance ? ` | ${translator.translate('distance')}: ${egg.distance}m` : ''} ${egg.team === 4 ? '' : ` | ${translator.translate('controlled by')} ${raidTeam}`}${egg.exclusive ? ` | ${translator.translate('must be an EX Gym')}` : ''} ${standardText(config, translator, egg)}${egg.gym_id ? ` ${translator.translate('at gym ')} ${gymNameText}` : ''}`
+	let rsvpText = ''
+	switch (egg.rsvp_changes) {
+		case 0:	rsvpText = translator.translate('without rsvp updates')
+			break
+		case 1: rsvpText = translator.translate('including rsvp updates')
+			break
+		case 2: rsvpText = translator.translate('rsvp only')
+			break
+		default: break
+	}
+
+	return `**${egg.level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${egg.level}`} ${translator.translate('eggs')}** ${egg.distance ? ` | ${translator.translate('distance')}: ${egg.distance}m` : ''} ${egg.team === 4 ? '' : ` | ${translator.translate('controlled by')} ${raidTeam}`}${egg.exclusive ? ` | ${translator.translate('must be an EX Gym')}` : ''} ${standardText(config, translator, egg)}${egg.gym_id ? ` ${translator.translate('at gym ')} ${gymNameText}` : ''} ${rsvpText}`
 }
 
 function questRowText(config, translator, GameData, quest) {
@@ -185,6 +206,24 @@ function lureRowText(config, translator, GameData, lure) {
 	return `${translator.translate('Lure type')}: **${translator.translate(typeText, true)}**${lure.distance ? ` | ${translator.translate('distance')}: ${lure.distance}m` : ''} ${standardText(config, translator, lure)}`
 }
 
+async function maxbattleRowText(config, translator, GameData, maxbattle, scannerQuery) {
+	const mon = Object.values(GameData.monsters).find((m) => m.id === maxbattle.pokemon_id && m.form.id === maxbattle.form)
+	const monsterName = mon ? translator.translate(mon.name) : 'levelMon'
+	let formName = mon ? translator.translate(mon.form.name) : 'levelMonForm'
+	if (!mon || formName === undefined || mon.form.id === 0 && formName === 'Normal') formName = ''
+
+	let stationNameText = null
+	if (maxbattle.station_id) stationNameText = scannerQuery ? await scannerQuery.getStationName(maxbattle.station_id) || maxbattle.station_id : maxbattle.station_id
+
+	const moveName = maxbattle.move !== 9000 && GameData.moves[maxbattle.move] ? `${translator.translate(GameData.moves[maxbattle.move].name)}/${translator.translate(GameData.moves[maxbattle.move].type)}` : ''
+
+	if (+maxbattle.pokemon_id === 9000) {
+		return `**${maxbattle.level === 90 ? translator.translate('All level') : `${translator.translate('level').charAt(0).toUpperCase() + translator.translate('level').slice(1)} ${maxbattle.level}`} ${translator.translate('maxbattles')}** ${maxbattle.distance ? ` | ${translator.translate('distance')}: ${maxbattle.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''} ${standardText(config, translator, maxbattle)}${maxbattle.station_id ? ` ${translator.translate('at station ')} ${stationNameText}` : ''}`
+	}
+
+	return `**${monsterName}**${formName ? ` ${translator.translate('form')}: ${formName}` : ''}${maxbattle.distance ? ` | ${translator.translate('distance')}: ${maxbattle.distance}m` : ''}${moveName ? ` | ${translator.translate('with move')} ${moveName}` : ''} ${standardText(config, translator, maxbattle)}${maxbattle.station_id ? ` ${translator.translate('at station ')} ${stationNameText}` : ''}`
+}
+
 function fortUpdateRowText(config, translator, GameData, fortUpdate) {
 	return `${translator.translate('Fort updates')}: **${translator.translate(fortUpdate.fort_type, true)}**${fortUpdate.distance ? ` | ${translator.translate('distance')}: ${fortUpdate.distance}m` : ''} ${fortUpdate.change_types}${fortUpdate.include_empty ? ' including empty changes' : ''} ${standardText(config, translator, fortUpdate)}`
 }
@@ -204,6 +243,7 @@ exports.invasionRowText = invasionRowText
 exports.nestRowText = nestRowText
 exports.lureRowText = lureRowText
 exports.gymRowText = gymRowText
+exports.maxbattleRowText = maxbattleRowText
 exports.fortUpdateRowText = fortUpdateRowText
 exports.currentAreaText = currentAreaText
 
@@ -239,6 +279,7 @@ exports.run = async (client, msg, args, options) => {
 		const lures = await client.query.selectAllQuery('lures', { id: target.id, profile_no: currentProfileNo })
 		const nests = await client.query.selectAllQuery('nests', { id: target.id, profile_no: currentProfileNo })
 		const gyms = await client.query.selectAllQuery('gym', { id: target.id, profile_no: currentProfileNo })
+		const maxbattles = await client.query.selectAllQuery('maxbattle', { id: target.id, profile_no: currentProfileNo })
 		const forts = await client.query.selectAllQuery('forts', { id: target.id, profile_no: currentProfileNo })
 		const profile = await client.query.selectOneQuery('profiles', { id: target.id, profile_no: currentProfileNo })
 
@@ -378,6 +419,19 @@ exports.run = async (client, msg, args, options) => {
 
 				for (const gym of gyms) {
 					message = message.concat('\n', await gymRowText(client.config, translator, client.GameData, gym, client.scannerQuery))
+				}
+			}
+		}
+
+		if (!client.config.general.disableMaxbattle) {
+			if (blocked.includes('maxbattle')) {
+				message = message.concat('\n\n', translator.translate('You do not have permission to track maxbattles'))
+			} else {
+				if (maxbattles.length) {
+					message = message.concat('\n\n', translator.translate('You\'re tracking the following maxbattles:'), '\n')
+				} else message = message.concat('\n\n', translator.translate('You\'re not tracking any maxbattles'))
+				for (const maxbattle of maxbattles) {
+					message = message.concat('\n', await maxbattleRowText(client.config, translator, client.GameData, maxbattle, client.scannerQuery))
 				}
 			}
 		}

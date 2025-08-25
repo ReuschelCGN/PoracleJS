@@ -3,7 +3,7 @@ const { diff } = require('deep-object-diff')
 const trackedCommand = require('../lib/poracleMessage/commands/tracked')
 
 module.exports = async (fastify, options) => {
-	fastify.get('/api/tracking/invasion/:id', options, async (req) => {
+	fastify.get('/api/tracking/maxbattle/:id', options, async (req) => {
 		fastify.logger.info(`API: ${req.ip} ${req.routeOptions.method} ${req.routeOptions.url}`)
 
 		if (fastify.config.server.ipWhitelist.length && !fastify.config.server.ipWhitelist.includes(req.ip)) return { webserver: 'unhappy', reason: `ip ${req.ip} not in whitelist` }
@@ -21,16 +21,20 @@ module.exports = async (fastify, options) => {
 				message: 'User not found',
 			}
 		}
+		const language = human.language || fastify.config.general.locale
+		const translator = fastify.translatorFactory.Translator(language)
 
-		const invasion = await fastify.query.selectAllQuery('invasion', { id: req.params.id, profile_no: human.current_profile_no })
+		const maxbattles = await fastify.query.selectAllQuery('maxbattle', { id: req.params.id, profile_no: human.current_profile_no })
+
+		const maxbattleWithDesc = await Promise.all(maxbattles.map(async (row) => ({ ...row, description: await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, row, fastify.scannerQuery) })))
 
 		return {
 			status: 'ok',
-			invasion,
+			maxbattle: maxbattleWithDesc,
 		}
 	})
 
-	fastify.delete('/api/tracking/invasion/:id/byUid/:uid', options, async (req) => {
+	fastify.delete('/api/tracking/maxbattle/:id/byUid/:uid', options, async (req) => {
 		fastify.logger.info(`API: ${req.ip} ${req.routeOptions.method} ${req.routeOptions.url}`)
 
 		if (fastify.config.server.ipWhitelist.length && !fastify.config.server.ipWhitelist.includes(req.ip)) return { webserver: 'unhappy', reason: `ip ${req.ip} not in whitelist` }
@@ -41,14 +45,14 @@ module.exports = async (fastify, options) => {
 			return { status: 'authError', reason: 'incorrect or missing api secret' }
 		}
 
-		await fastify.query.deleteQuery('invasion', { id: req.params.id, uid: req.params.uid })
+		await fastify.query.deleteQuery('maxbattle', { id: req.params.id, uid: req.params.uid })
 
 		return {
 			status: 'ok',
 		}
 	})
 
-	fastify.post('/api/tracking/invasion/:id', options, async (req) => {
+	fastify.post('/api/tracking/maxbattle/:id', options, async (req) => {
 		fastify.logger.info(`API: ${req.ip} ${req.routeOptions.method} ${req.routeOptions.url}`)
 
 		if (fastify.config.server.ipWhitelist.length && !fastify.config.server.ipWhitelist.includes(req.ip)) return { webserver: 'unhappy', reason: `ip ${req.ip} not in whitelist` }
@@ -79,53 +83,36 @@ module.exports = async (fastify, options) => {
 		const defaultTo = ((value, x) => ((value === undefined) ? x : value))
 
 		const insert = insertReq.map((row) => {
-			if (!row.grunt_type) {
-				throw new Error('Grunt type mandatory')
+			let level = 9000
+			if (row.pokemon_id === 9000) {
+				level = +row.level
+				if (row.level === undefined || level < 1 || (level > Math.max(...Object.keys(fastify.GameData.utilData.maxbattleLevels).map((k) => +k)) && level !== 90)) {
+					throw new Error('Invalid level (must be specified if no pokemon_id')
+				}
 			}
+
 			return {
 				id,
 				profile_no: currentProfileNo,
 				ping: '',
 				template: (row.template || fastify.config.general.defaultTemplateName).toString(),
+				pokemon_id: +defaultTo(row.pokemon_id, 9000),
+				gmax: +defaultTo(row.gmax, 0),
 				distance: +defaultTo(row.distance, 0),
-				clean: +defaultTo(row.clean, 0),
-				gender: +defaultTo(row.gender, 0),
-				grunt_type: row.grunt_type,
+				clean: +defaultTo(+row.clean, 0),
+				level: +level,
+				form: +defaultTo(row.form, 0),
+				move: +defaultTo(row.move, 9000),
+				evolution: +defaultTo(row.evolution, 9000),
+				station_id: row.station_id ? row.station_id : null,
 			}
 		})
 
 		try {
-			const tracked = await fastify.query.selectAllQuery('invasion', { id, profile_no: currentProfileNo })
+			const tracked = await fastify.query.selectAllQuery('maxbattle', { id, profile_no: currentProfileNo })
 
 			const updates = []
 			const alreadyPresent = []
-
-			for (let i = insert.length - 1; i >= 0; i--) {
-				const toInsert = insert[i]
-
-				for (const existing of tracked.filter((x) => x.grunt_type === toInsert.grunt_type)) {
-					const differences = diff(existing, toInsert)
-
-					switch (Object.keys(differences).length) {
-						case 1:		// No differences (only UID)
-							// No need to insert
-							alreadyPresent.push(toInsert)
-							insert.splice(i, 1)
-							break
-						case 2:		// One difference (something + uid)
-							if (Object.keys(differences).some((x) => ['distance', 'template', 'clean'].includes(x))) {
-								updates.push({
-									...toInsert,
-									uid: existing.uid,
-								})
-								insert.splice(i, 1)
-							}
-							break
-						default:	// more differences
-							break
-					}
-				}
-			}
 
 			let message = ''
 
@@ -133,18 +120,18 @@ module.exports = async (fastify, options) => {
 				message = translator.translateFormat('I have made a lot of changes. See {0}{1} for details', '!', /* util.prefix, */ translator.translate('tracked'))
 			} else {
 				for (const i of alreadyPresent) {
-					message = message.concat(translator.translate('Unchanged: '), trackedCommand.invasionRowText(fastify.config, translator, fastify.GameData, i), '\n')
+					message = message.concat(translator.translate('Unchanged: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
 				for (const i of updates) {
-					message = message.concat(translator.translate('Updated: '), trackedCommand.invasionRowText(fastify.config, translator, fastify.GameData, i), '\n')
+					message = message.concat(translator.translate('Updated: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
 				for (const i of insert) {
-					message = message.concat(translator.translate('New: '), trackedCommand.invasionRowText(fastify.config, translator, fastify.GameData, i), '\n')
+					message = message.concat(translator.translate('New: '), await trackedCommand.maxbattleRowText(fastify.config, translator, fastify.GameData, i, fastify.scannerQuery), '\n')
 				}
 			}
 
 			await fastify.query.deleteWhereInQuery(
-				'invasion',
+				'maxbattle',
 				{
 					id,
 					profile_no: currentProfileNo,
@@ -153,7 +140,7 @@ module.exports = async (fastify, options) => {
 				'uid',
 			)
 
-			await fastify.query.insertQuery('invasion', [...insert, ...updates])
+			await fastify.query.insertQuery('maxbattle', [...insert, ...updates])
 
 			// Send message to user
 
@@ -189,7 +176,7 @@ module.exports = async (fastify, options) => {
 		}
 	})
 
-	fastify.post('/api/tracking/invasion/:id/delete', options, async (req) => {
+	fastify.post('/api/tracking/maxbattle/:id/delete', options, async (req) => {
 		fastify.logger.info(`API: ${req.ip} ${req.routeOptions.method} ${req.routeOptions.url}`)
 
 		if (fastify.config.server.ipWhitelist.length && !fastify.config.server.ipWhitelist.includes(req.ip)) return { webserver: 'unhappy', reason: `ip ${req.ip} not in whitelist` }
@@ -203,7 +190,7 @@ module.exports = async (fastify, options) => {
 		let deleteUids = req.body
 		if (!Array.isArray(deleteUids)) deleteUids = [deleteUids]
 
-		await fastify.query.deleteWhereInQuery('invasion', {
+		await fastify.query.deleteWhereInQuery('maxbattle', {
 			id: req.params.id,
 		}, deleteUids, 'uid')
 

@@ -73,7 +73,7 @@ class Invasion extends Controller {
 
 			Object.assign(data, this.config.general.dtsDictionary)
 			data.googleMapUrl = `https://maps.google.com/maps?q=${data.latitude},${data.longitude}`
-			data.appleMapUrl = `https://maps.apple.com/maps?daddr=${data.latitude},${data.longitude}`
+			data.appleMapUrl = `https://maps.apple.com/place?coordinate=${data.latitude},${data.longitude}`
 			data.wazeMapUrl = `https://www.waze.com/ul?ll=${data.latitude},${data.longitude}&navigate=yes&zoom=17`
 			if (this.config.general.rdmURL) {
 				data.rdmUrl = `${this.config.general.rdmURL}${!this.config.general.rdmURL.endsWith('/') ? '/' : ''}@pokestop/${data.pokestop_id}`
@@ -321,6 +321,25 @@ class Invasion extends Controller {
 									data.gruntRewards = gruntRewards
 									data.gruntRewardsList = gruntRewardsList
 								}
+							}
+							// Lineup 100% of encounter
+							let gruntLineupformNormalised = ''
+							const gruntLineupList = { confirmed: true, monsters: [] }
+							if (data.lineup && data.lineup !== 'null') {
+								data.lineup.forEach((lr) => {
+									const lineup = +lr.pokemon_id
+									const lineupForm = +lr.form
+									const lineupMonster = Object.values(this.GameData.monsters).find((mon) => mon.id === lineup && mon.form.id === lineupForm)
+									gruntLineupformNormalised = lineupMonster.form.name === 'Normal' ? '' : (`${translator.translate(lineupMonster.form.name)} `)
+									gruntLineupList.monsters.push({
+										id: lineup,
+										formId: lineupForm,
+										name: translator.translate(lineupMonster.name),
+										formName: translator.translate(lineupMonster.form.name),
+										fullName: gruntLineupformNormalised + translator.translate(lineupMonster.name),
+									})
+								})
+								data.gruntLineupList = gruntLineupList
 							}
 						}
 

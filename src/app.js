@@ -589,12 +589,50 @@ async function processOne(hook) {
 					fastify.webhooks.info(`raid ${JSON.stringify(hook.message)}`)
 					const cacheKey = `${hook.message.gym_id}${hook.message.end}${hook.message.pokemon_id}`
 
-					if (fastify.cache.get(cacheKey)) {
+					const raidDetails = fastify.cache.get(cacheKey)
+					let rsvpDifference = false
+					const oldRsvpsLen = raidDetails?.rsvps?.length ?? 0
+					const newRsvpsLen = hook.message.rsvps?.length ?? 0
+					if (newRsvpsLen > oldRsvpsLen) {
+						rsvpDifference = true
+					} else if (raidDetails && raidDetails.rsvps && hook.message.rsvps) {
+						// Allow for old timeslots to have disappeared, so only compare the
+						// new ones present
+						for (let x = 0; x < newRsvpsLen; x++) {
+							const newRsvp = hook.message.rsvps[x]
+
+							let found = false
+							for (const oldRsvp of raidDetails.rsvps) {
+								if (newRsvp.timeslot === oldRsvp.timeslot) {
+									found = true
+									if (newRsvp.going_count !== oldRsvp.going_count
+											|| newRsvp.maybe_count !== oldRsvp.maybe_count) {
+										rsvpDifference = true
+									}
+									break
+								}
+							}
+
+							if (found) {
+								if (rsvpDifference) break
+							} else {
+								// timeslot was not in old rsvps
+								rsvpDifference = true
+								break
+							}
+						}
+					}
+
+					if (raidDetails && !rsvpDifference) {
 						fastify.controllerLog.debug(`${hook.message.gym_id}: Raid was sent again too soon, ignoring`)
 						break
 					}
 
-					fastify.cache.set(cacheKey, 'x')
+					hook.message.firstNotification = !raidDetails
+
+					fastify.cache.set(cacheKey, {
+						rsvps: hook.message.rsvps,
+					})
 				}
 
 				await processHook(hook)
@@ -609,6 +647,8 @@ async function processOne(hook) {
 				fastify.webhooks.info(`pokestop(${hook.type}) ${JSON.stringify(hook.message)}`)
 				const incidentExpiration = hook.message.incident_expiration ?? hook.message.incident_expire_timestamp
 				const lureExpiration = hook.message.lure_expiration
+				const incidentConfirmed = hook.message.confirmed
+				const incidentDisplayType = hook.message.display_type
 				if (!lureExpiration && !incidentExpiration) {
 					fastify.controllerLog.debug(`${hook.message.pokestop_id}: Pokestop received but no invasion or lure information, ignoring`)
 					break
@@ -629,8 +669,24 @@ async function processOne(hook) {
 					}
 				}
 
-				if (incidentExpiration && !config.general.disableInvasion) {
+				if (incidentExpiration && !config.general.disableInvasion && (!config.general.disableUnconfirmedInvasion || incidentDisplayType > '6')) {
 					const cacheKey = `${hook.message.pokestop_id}I${incidentExpiration}`
+
+					if (fastify.cache.get(cacheKey) && !hook.message.poracleTest) {
+						fastify.controllerLog.debug(`${hook.message.pokestop_id}: Invasion was sent again too soon, ignoring`)
+					} else {
+						// Set cache expiry to calculated invasion expiry time + 5 minutes to cope with near misses
+						const secondsRemaining = Math.max((incidentExpiration * 1000 - Date.now()) / 1000, 0) + 300
+
+						fastify.cache.set(cacheKey, 'x', secondsRemaining)
+
+						hook.type = 'invasion'
+						await processHook(hook)
+					}
+				}
+
+				if (incidentConfirmed && !config.general.disableInvasion && config.general.processConfirmedInvasionLineups) {
+					const cacheKey = `${hook.message.pokestop_id}I${incidentExpiration}H02`
 
 					if (fastify.cache.get(cacheKey) && !hook.message.poracleTest) {
 						fastify.controllerLog.debug(`${hook.message.pokestop_id}: Invasion was sent again too soon, ignoring`)
@@ -719,7 +775,6 @@ async function processOne(hook) {
 				await processHook(hook)
 				break
 			}
-
 			case 'nest': {
 				if (config.general.disableNest) {
 					fastify.controllerLog.debug(`${hook.message.nest_id}: Nest was received but set to be ignored in config`)
@@ -741,7 +796,27 @@ async function processOne(hook) {
 				await processHook(hook)
 				break
 			}
+			case 'max_battle': {
+				if (config.general.disableMaxBattle) {
+					fastify.controllerLog.debug(`${hook.message.id}: MaxBattle was received but set to be ignored in config`)
 
+					break
+				}
+				if (!hook.message.poracleTest) {
+					fastify.webhooks.info(`max_battle ${JSON.stringify(hook.message)}`)
+					const cacheKey = `${hook.message.id}${hook.message.battle_end}${hook.message.battle_pokemon_id}`
+
+					if (fastify.cache.get(cacheKey)) {
+						fastify.controllerLog.debug(`${hook.message.id}: MaxBattle was sent again too soon, ignoring`)
+						break
+					}
+
+					fastify.cache.set(cacheKey, 'x')
+				}
+
+				await processHook(hook)
+				break
+			}
 			case 'weather': {
 				if (config.general.disableWeather) break
 				fastify.webhooks.info(`weather ${JSON.stringify(hook.message)}`)

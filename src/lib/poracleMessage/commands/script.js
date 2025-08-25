@@ -28,7 +28,7 @@ exports.run = async (client, msg, args, options) => {
 
 		if (!args.length) {
 			await msg.reply(
-				translator.translateFormat('Valid commands are e.g. `{0}script everything`, `{0}script pokemon raids eggs quest lures invasion nests gym`, `{0}script everything allprofiles`, `{0}script everything link`', util.prefix),
+				translator.translateFormat('Valid commands are e.g. `{0}script everything`, `{0}script pokemon raids eggs quest lures invasion nests gym forts maxbattles`, `{0}script everything allprofiles`, `{0}script everything link`', util.prefix),
 				{ style: 'markdown' },
 			)
 			return
@@ -60,6 +60,8 @@ exports.run = async (client, msg, args, options) => {
 			const lures = await client.query.selectAllQuery('lures', { id: target.id, profile_no: currentProfileNo })
 			const nests = await client.query.selectAllQuery('nests', { id: target.id, profile_no: currentProfileNo })
 			const gyms = await client.query.selectAllQuery('gym', { id: target.id, profile_no: currentProfileNo })
+			const forts = await client.query.selectAllQuery('forts', { id: target.id, profile_no: currentProfileNo })
+			const maxbattles = await client.query.selectAllQuery('maxbattle', { id: target.id, profile_no: currentProfileNo })
 
 			const gender = ['', 'male', 'female', 'genderless']
 
@@ -70,7 +72,7 @@ exports.run = async (client, msg, args, options) => {
 					mincp: ['min_cp', 0],
 					macxp: ['max_cp', 9000],
 					level: ['min_level', 0],
-					maxlevel: ['max_level', 40],
+					maxlevel: ['max_level', 50],
 					atk: ['atk', 0],
 					def: ['def', 0],
 					sta: ['sta', 0],
@@ -303,6 +305,32 @@ exports.run = async (client, msg, args, options) => {
 				}
 			}
 		}
+
+			if (everything || args.includes('maxbattles')) {
+				const maxbattleParameters = {
+					template: ['template', client.config.general.defaultTemplateName.toString()],
+					d: ['distance', 0],
+				}
+
+				for (const maxbattle of maxbattles) {
+					message += `${prefix}maxbattle `
+					if (maxbattle.pokemon_id === 9000) {
+						message += `level:${maxbattle.level}`
+					} else {
+						const mon = client.GameData.monsters[`${maxbattle.pokemon_id}_${maxbattle.form}`]
+
+						message += `${mon.name}`
+						if (maxbattle.form) message += ` form:${mon.form.name}` // will not work
+					}
+					for (const [param, [dbFieldName, defaultValue]] of Object.entries(maxbattleParameters)) {
+						if (maxbattle[dbFieldName] !== defaultValue) message += ` ${param}:${maxbattle[dbFieldName]}`
+					}
+					if (maxbattle.level > 5) message += ' Gmax'
+					if (maxbattle.clean) message += ' clean'
+
+					message += '\n'
+				}
+			}
 
 		if 	(args.includes('allprofiles')) {
 			for (const profile of profiles) {
