@@ -270,7 +270,7 @@ exports.run = async (client, msg, args, options) => {
 
 					if (fort.include_empty) message += ' include_empty'
 					for (const [param, [dbFieldName, defaultValue]] of Object.entries(fortParameters)) {
-						if (fort[dbFieldName] !== defaultValue) message += ` ${param}:${ford[dbFieldName]}`
+						if (fort[dbFieldName] !== defaultValue) message += ` ${param}:${fort[dbFieldName]}`
 					}
 
 					message += '\n'
