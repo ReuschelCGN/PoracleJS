@@ -28,7 +28,7 @@ exports.run = async (client, msg, args, options) => {
 
 		if (!args.length) {
 			await msg.reply(
-				translator.translateFormat('Valid commands are e.g. `{0}script everything`, `{0}script pokemon raids eggs quest lures invasion nests gym`, `{0}script everything allprofiles`, `{0}script everything link`', util.prefix),
+				translator.translateFormat('Valid commands are e.g. `{0}script everything`, `{0}script pokemon raids eggs quest lures invasion nests gym forts`, `{0}script everything allprofiles`, `{0}script everything link`', util.prefix),
 				{ style: 'markdown' },
 			)
 			return
@@ -60,6 +60,7 @@ exports.run = async (client, msg, args, options) => {
 			const lures = await client.query.selectAllQuery('lures', { id: target.id, profile_no: currentProfileNo })
 			const nests = await client.query.selectAllQuery('nests', { id: target.id, profile_no: currentProfileNo })
 			const gyms = await client.query.selectAllQuery('gym', { id: target.id, profile_no: currentProfileNo })
+			const forts = await client.query.selectAllQuery('forts', { id: target.id, profile_no: currentProfileNo })
 
 			const gender = ['', 'male', 'female', 'genderless']
 
@@ -136,6 +137,8 @@ exports.run = async (client, msg, args, options) => {
 					}
 					if (raid.team !== 4) message += ` team:${raidTeams[raid.team]}`
 					if (raid.exclusive) message += ' ex'
+					if (raid.rsvp_changes == 1) message += ' rsvp'
+					if (raid.rsvp_changes == 2) message += ' rsvp_only'
 					if (raid.clean) message += ' clean'
 
 					message += '\n'
@@ -157,6 +160,8 @@ exports.run = async (client, msg, args, options) => {
 					}
 					if (egg.team !== 4) message += ` team:${raidTeams[egg.team]}`
 					if (egg.exclusive) message += ' ex'
+					if (egg.rsvp_changes == 1) message += ' rsvp'
+					if (egg.rsvp_changes == 2) message += ' rsvp_only'
 					if (egg.clean) message += ' clean'
 
 					message += '\n'
@@ -249,6 +254,23 @@ exports.run = async (client, msg, args, options) => {
 					}
 
 					if (gym.clean) message += ' clean'
+
+					message += '\n'
+				}
+			}
+
+			if (everything || args.includes('forts')) {
+				const fortParameters = {
+					template: ['template', client.config.general.defaultTemplateName.toString()],
+					d: ['distance', 0],
+				}
+				for (const fort of forts) {
+					message += `${prefix}fort ${fort.fort_type}`
+
+					if (fort.include_empty) message += ' include_empty'
+					for (const [param, [dbFieldName, defaultValue]] of Object.entries(fortParameters)) {
+						if (fort[dbFieldName] !== defaultValue) message += ` ${param}:${fort[dbFieldName]}`
+					}
 
 					message += '\n'
 				}
