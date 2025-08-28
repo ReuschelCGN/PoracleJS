@@ -325,7 +325,6 @@ exports.run = async (client, msg, args, options) => {
 					message += '\n'
 				}
 			}
-		}
 
 			if (everything || args.includes('maxbattles')) {
 				const maxbattleParameters = {
@@ -352,6 +351,7 @@ exports.run = async (client, msg, args, options) => {
 					message += '\n'
 				}
 			}
+		}
 
 		if 	(args.includes('allprofiles')) {
 			for (const profile of profiles) {
