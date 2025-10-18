@@ -143,6 +143,7 @@ class Quest extends Controller {
 			data.dustAmount = data.rewardData.dustAmount
 			data.isShiny = data.rewardData.monsters.length > 0 ? data.rewardData.monsters[0].shiny : 0
 			data.shinyPossible = data.rewardData.monsters.length > 0 ? this.shinyPossible.isShinyPossible(data.rewardData.monsters[0].pokemonId, data.rewardData.monsters[0].formId) : false
+			data.background = data.rewardData.monsters.length > 0 ? data.rewardData.monsters[0].background : false
 
 			data.itemAmount = data.rewardData.itemAmount
 			//			data.monsters = data.rewardData.monsters
@@ -434,6 +435,7 @@ class Quest extends Controller {
 					pokemonId: reward.info.pokemon_id,
 					formId: reward.info.form_id ?? 0,
 					shiny: reward.info.shiny ?? false,
+					background: reward.info.background ?? false,
 				})
 			} else if (reward.type === 12) {
 				energyMonsters.push({
