@@ -264,7 +264,7 @@ class Invasion extends Controller {
 											else first = false
 
 											const firstReward = +fr.id
-											const firstRewardForm = +fr.form
+											const firstRewardForm = +(fr.form || 0)
 											const firstRewardMonster = Object.values(this.GameData.monsters).find((mon) => mon.id === firstReward && mon.form.id === firstRewardForm)
 											gruntRewardsformNormalised = firstRewardMonster.form.name === 'Normal' ? '' : (`${translator.translate(firstRewardMonster.form.name)} `)
 											gruntRewards += gruntRewardsformNormalised + firstRewardMonster ? translator.translate(firstRewardMonster.name) : ''
@@ -284,7 +284,7 @@ class Invasion extends Controller {
 											else first = false
 
 											const secondReward = +sr.id
-											const secondRewardForm = +sr.form
+											const secondRewardForm = +(sr.form || 0)
 											const secondRewardMonster = Object.values(this.GameData.monsters).find((mon) => mon.id === secondReward && mon.form.id === secondRewardForm)
 											gruntRewardsformNormalised = secondRewardMonster.form.name === 'Normal' ? '' : (`${translator.translate(secondRewardMonster.form.name)} `)
 											gruntRewards += gruntRewardsformNormalised + secondRewardMonster ? translator.translate(secondRewardMonster.name) : ''
@@ -305,7 +305,7 @@ class Invasion extends Controller {
 											else first = false
 
 											const reward = +tr.id
-											const rewardForm = +tr.form
+											const rewardForm = +(tr.form || 0)
 											const rewardMonster = Object.values(this.GameData.monsters).find((mon) => mon.id === reward && mon.form.id === rewardForm)
 											gruntRewardsformNormalised = rewardMonster.form.name === 'Normal' ? '' : (`${translator.translate(rewardMonster.form.name)} `)
 											gruntRewards += gruntRewardsformNormalised + rewardMonster ? translator.translate(rewardMonster.name) : ''
@@ -328,7 +328,7 @@ class Invasion extends Controller {
 							if (data.lineup && data.lineup !== 'null') {
 								data.lineup.forEach((lr) => {
 									const lineup = +lr.pokemon_id
-									const lineupForm = +lr.form
+									const lineupForm = +(lr.form || 0)
 									const lineupMonster = Object.values(this.GameData.monsters).find((mon) => mon.id === lineup && mon.form.id === lineupForm)
 									gruntLineupformNormalised = lineupMonster.form.name === 'Normal' ? '' : (`${translator.translate(lineupMonster.form.name)} `)
 									gruntLineupList.monsters.push({
